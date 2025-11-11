@@ -15,9 +15,9 @@
 - [x] Implement 06_Functional_Testing_with_WebTest
 - [x] Implement 07_Basic_Web_Handling_With_Views
 - [x] Implement 08_HTML_Generation_With_Templating
+- [x] Implement 09_Organizing_Views_With_View_Classes
 
 ## Pending
-- [ ] Implement 09_Organizing_Views_With_View_Classes
 - [ ] Implement 10_Handling_Web_Requests_and_Responses
 - [ ] Implement 11_Dispatching_URLs_To_Views_With_Routing
 - [ ] Implement 12_Templating_With_jinja2
