@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ company.name }}</title>
+    <link rel="stylesheet" href="{{ request.static_url('tutorial:static/app.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ company.name }}</h1>
+            <p>Company details using view classes</p>
+        </header>
+
+        <main>
+            <div class="company-details">
+                <div class="company-card detailed">
+                    <h2>Company Information</h2>
+                    <div class="company-info">
+                        <div class="info-row">
+                            <span class="label">Industry:</span>
+                            <span class="value">{{ company.industry }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Employees:</span>
+                            <span class="value">{{ company.employees }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Revenue:</span>
+                            <span class="value">${{ "{:,.0f}".format(company.revenue) }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Founded:</span>
+                            <span class="value">{{ company.founded }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Headquarters:</span>
+                            <span class="value">{{ company.headquarters }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <h2>API Endpoints</h2>
+                <p>This company data is also available via JSON API:</p>
+                <div class="api-links">
+                    <a href="/company/{{ company_key }}/json" class="btn">View JSON API</a>
+                    <button id="fetch-json-btn" class="btn secondary" data-company="{{ company_key }}">Fetch JSON with AJAX</button>
+                </div>
+                <div id="json-response" class="response-area"></div>
+            </div>
+
+            <div class="demo-section">
+                <h2>REST API Operations</h2>
+                <p>Test different HTTP methods on this resource:</p>
+                <div class="api-operations">
+                    <button id="put-btn" class="btn warning" data-company="{{ company_key }}">PUT (Update)</button>
+                    <button id="delete-btn" class="btn danger" data-company="{{ company_key }}">DELETE</button>
+                </div>
+                <div id="operation-response" class="response-area"></div>
+            </div>
+
+            <div class="demo-section">
+                <h2>View Class Features Demonstrated</h2>
+                <ul class="features-list">
+                    <li><strong>Resource-based Views:</strong> One view class handles multiple HTTP methods</li>
+                    <li><strong>URL Parameter Binding:</strong> <code>{{ company_key }}</code> extracted from URL</li>
+                    <li><strong>Multiple Renderers:</strong> HTML and JSON responses from same view class</li>
+                    <li><strong>Error Handling:</strong> 404 responses for non-existent companies</li>
+                    <li><strong>RESTful Design:</strong> GET, PUT, DELETE operations</li>
+                    <li><strong>Request Context:</strong> Access to request data and routing information</li>
+                </ul>
+            </div>
+
+            <div class="demo-section">
+                <h2>Navigation</h2>
+                <p><a href="/" class="btn secondary">← Back to Home</a></p>
+                <p>Other companies:</p>
+                <div class="company-links">
+                    {% if company_key != 'acme' %}
+                    <a href="/company/acme" class="company-link">Acme Corporation</a>
+                    {% endif %}
+                    {% if company_key != 'globex' %}
+                    <a href="/company/globex" class="company-link">Globex Corporation</a>
+                    {% endif %}
+                    {% if company_key != 'initech' %}
+                    <a href="/company/initech" class="company-link">Initech</a>
+                    {% endif %}
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ request.static_url('tutorial:static/app.js') }}"></script>
+</body>
+</html>

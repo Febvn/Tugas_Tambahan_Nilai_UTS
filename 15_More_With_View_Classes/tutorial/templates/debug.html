@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Information</title>
+    <link rel="stylesheet" href="{{ request.static_url('tutorial:static/app.css') }}">
+    <style>
+        .debug-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        .debug-section {
+            margin-bottom: 20px;
+        }
+        .debug-section h3 {
+            color: #495057;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Debug Information</h1>
+            <p>Request debugging with custom predicates</p>
+        </header>
+
+        <main>
+            <div class="debug-info">
+                <div class="debug-section">
+                    <h3>Request Information</h3>
+                    <strong>Method:</strong> {{ debug_info.method }}
+                    <strong>URL:</strong> {{ debug_info.url }}
+                </div>
+
+                <div class="debug-section">
+                    <h3>URL Parameters (matchdict)</h3>
+                    {% for key, value in debug_info.matchdict.items() %}
+                    <strong>{{ key }}:</strong> {{ value }}
+                    {% endfor %}
+                </div>
+
+                <div class="debug-section">
+                    <h3>Query Parameters</h3>
+                    {% for key, value in debug_info.params.items() %}
+                    <strong>{{ key }}:</strong> {{ value }}
+                    {% endfor %}
+                </div>
+
+                <div class="debug-section">
+                    <h3>Headers</h3>
+                    {% for key, value in debug_info.headers.items() %}
+                    <strong>{{ key }}:</strong> {{ value }}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <h2>Available Companies Data</h2>
+                <div class="debug-info">
+                    {% for company_key, company_data in companies.items() %}
+                    <div class="debug-section">
+                        <h3>{{ company_key.title() }}</h3>
+                        <strong>Name:</strong> {{ company_data.name }}
+                        <strong>Industry:</strong> {{ company_data.industry }}
+                        <strong>Employees:</strong> {{ company_data.employees }}
+                        <strong>Revenue:</strong> ${{ "{:,.0f}".format(company_data.revenue) }}
+                        <strong>Founded:</strong> {{ company_data.founded }}
+                        <strong>Headquarters:</strong> {{ company_data.headquarters }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <h2>Custom Predicate Explanation</h2>
+                <p>This debug page is only shown when the URL contains <code>?debug=true</code>.</p>
+                <p>This demonstrates:</p>
+                <ul class="features-list">
+                    <li><strong>Custom Predicates:</strong> Conditional view matching based on request parameters</li>
+                    <li><strong>View Configuration:</strong> Multiple views for the same route with different conditions</li>
+                    <li><strong>Debugging Tools:</strong> Detailed request inspection for development</li>
+                    <li><strong>Conditional Rendering:</strong> Different responses based on query parameters</li>
+                </ul>
+            </div>
+
+            <div class="demo-section">
+                <h2>Navigation</h2>
+                <p><a href="/" class="btn secondary">← Back to Home</a></p>
+                <p>Try without debug parameter: <a href="/">/</a></p>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
