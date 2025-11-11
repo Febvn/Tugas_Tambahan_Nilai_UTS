@@ -8,9 +8,9 @@
 - [x] Create README.md
 - [x] Initial commit
 - [x] Implement 01_Single-File_Web_Applications
+- [x] Implement 02_Python_Packages_for_Pyramid_Applications
 
 ## Pending
-- [ ] Implement 02_Python_Packages_for_Pyramid_Applications
 - [ ] Implement 03_Application_Configuration_with_.ini_Files
 - [ ] Implement 04_Easier_Development_with_debugtoolbar
 - [ ] Implement 05_Unit_Tests_and_pytest
