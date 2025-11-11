@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="pyramid web application">
+    <meta name="author" content="Pylons Project">
+    <link rel="shortcut icon" href="${request.static_url('tutorial:static/pyramid-16x16.png')}">
+    <title>${name} - Pyramid tutorial wiki (based on TurboGears 20-Minute Wiki)</title>
+</head>
+<body>
+    <div class="starter-template">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <img class="m-3" src="${request.static_url('tutorial:static/pyramid.png')}" height="150px">
+                </div>
+                <div class="col-md-10">
+                    <h1><span class="font-semi-bold">Pyramid</span> <span class="smaller">Tutorial</span></h1>
+                    <br><br>
+                    <p class="lead">Welcome to the <span class="font-normal">${name}</span>, an example Pyramid application with Chameleon templating. This is the home page.</p>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>Sites</h3>
+                    <p>See the <a href="${request.route_url('hello')}">Hello World</a> page.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
