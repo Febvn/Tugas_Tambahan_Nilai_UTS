@@ -3,6 +3,7 @@ from setuptools import setup
 requires = [
     'pyramid',
     'pytest',
+    'webtest',
 ]
 
 setup(
