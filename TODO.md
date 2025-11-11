@@ -14,9 +14,9 @@
 - [x] Implement 05_Unit_Tests_and_pytest
 - [x] Implement 06_Functional_Testing_with_WebTest
 - [x] Implement 07_Basic_Web_Handling_With_Views
+- [x] Implement 08_HTML_Generation_With_Templating
 
 ## Pending
-- [ ] Implement 08_HTML_Generation_With_Templating
 - [ ] Implement 09_Organizing_Views_With_View_Classes
 - [ ] Implement 10_Handling_Web_Requests_and_Responses
 - [ ] Implement 11_Dispatching_URLs_To_Views_With_Routing
