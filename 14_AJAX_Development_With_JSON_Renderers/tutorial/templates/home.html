@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ project }}</title>
+    <link rel="stylesheet" href="{{ request.static_url('tutorial:static/app.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ project }}</h1>
+            <p>Demonstrating AJAX calls with JSON renderers in Pyramid</p>
+        </header>
+
+        <main>
+            <div class="demo-section">
+                <h2>GET Request Demo</h2>
+                <p>Fetch data from the API using AJAX GET request</p>
+                <button id="get-data-btn" class="btn">Get API Data</button>
+                <div id="get-response" class="response-area"></div>
+            </div>
+
+            <div class="demo-section">
+                <h2>POST Request Demo</h2>
+                <p>Send data to the API using AJAX POST request</p>
+                <form id="post-form">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" value="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" value="john@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message:</label>
+                        <textarea id="message" name="message" rows="3">Hello from AJAX!</textarea>
+                    </div>
+                    <button type="submit" class="btn">Send POST Request</button>
+                </form>
+                <div id="post-response" class="response-area"></div>
+            </div>
+
+            <div class="demo-section">
+                <h2>Response History</h2>
+                <div id="history" class="history-area">
+                    <p>API call history will appear here...</p>
+                </div>
+                <button id="clear-history-btn" class="btn secondary">Clear History</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ request.static_url('tutorial:static/app.js') }}"></script>
+</body>
+</html>
