@@ -19,9 +19,9 @@
 - [x] Implement 10_Handling_Web_Requests_and_Responses
 - [x] Implement 11_Dispatching_URLs_To_Views_With_Routing
 - [x] Implement 12_Templating_With_jinja2
+- [x] Implement 13_CSS_JS_Images_Files_With_Static_Assets
 
 ## Pending
-- [ ] Implement 13_CSS_JS_Images_Files_With_Static_Assets
 - [ ] Implement 14_AJAX_Development_With_JSON_Renderers
 - [ ] Implement 15_More_With_View_Classes
 - [ ] Implement 16_Collecting_Application_Info_With_Logging
