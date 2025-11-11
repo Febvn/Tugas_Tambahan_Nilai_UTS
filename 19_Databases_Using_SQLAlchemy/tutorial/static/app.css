@@ -1,0 +1,22 @@
+body {
+    padding-top: 60px;
+}
+
+.logo {
+    width: 201px;
+    height: 150px;
+}
+
+.content {
+    margin-top: 20px;
+}
+
+.starter-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+
+.body {
+    text-align: left;
+    margin-top: 20px;
+}

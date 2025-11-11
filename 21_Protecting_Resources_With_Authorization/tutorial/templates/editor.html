@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="pyramid web application">
+    <meta name="author" content="Pylons Project">
+    <link rel="shortcut icon" href="{{ request.static_url('tutorial:static/pyramid-16x16.png') }}">
+
+    <title>Quick Tutorial: {{ name }}</title>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/flatly/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ request.static_url('tutorial:static/app.css') }}">
+</head>
+
+<body>
+    <div class="starter-template">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <img class="logo img-responsive center-block" src="{{ request.static_url('tutorial:static/pyramid.png') }}">
+                </div>
+                <div class="col-md-10">
+                    <div class="content">
+                        <h1><span class="font-semi-bold">Pyramid</span> <span class="smaller">Tutorial</span></h1>
+                        <p class="lead">Welcome <span class="font-normal">{{ request.authenticated_userid or 'visitor' }}</span>!</p>
+                        {% if user %}
+                        <p class="text-muted">Role: <strong>{{ user.role }}</strong></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>Navigation</h3>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/">Home</a></li>
+                        <li class="active"><a href="/editor">Editor Page</a></li>
+                        <li><a href="/admin">Admin Page</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-8">
+                    <h3>Editor Page</h3>
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <span class="glyphicon glyphicon-ok"></span> Access Granted
+                            </h4>
+                        </div>
+                        <div class="panel-body">
+                            <p class="lead">Congratulations! You have <strong>edit</strong> permission.</p>
+                            <p>This page is accessible to users with the following roles:</p>
+                            <ul>
+                                <li><span class="label label-danger">Admin</span> - Full access</li>
+                                <li><span class="label label-warning">Editor</span> - Edit access</li>
+                            </ul>
+                            <p class="text-muted">Users with the 'viewer' role cannot access this page.</p>
+                            
+                            <hr>
+                            
+                            <h4>Your Information:</h4>
+                            {% if user %}
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Username</th>
+                                    <td>{{ user.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>{{ user.email }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Role</th>
+                                    <td>{{ user.role }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Created</th>
+                                    <td>{{ user.date_created }}</td>
+                                </tr>
+                            </table>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="{{ request.static_url('tutorial:static/app.js') }}"></script>
+</body>
+</html>

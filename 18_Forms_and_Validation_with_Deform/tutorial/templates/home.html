@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ request.static_url('tutorial:static/app.css') }}">
+    <link rel="stylesheet" href="{{ request.static_url('deform_static:css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ request.static_url('deform_static:css/form.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ title }}</h1>
+            <p>Comprehensive form handling with Deform and Colander validation</p>
+        </header>
+
+        <main>
+            {% for message in request.session.pop_flash() %}
+            <div class="alert alert-{{ 'success' if 'success' in message.category else 'danger' }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+
+            <div class="demo-section">
+                <h2>Available Forms</h2>
+                <p>Explore different types of forms and validation:</p>
+                <div class="form-links">
+                    <a href="{{ request.route_url('contact') }}" class="btn btn-primary">Contact Form</a>
+                    <a href="{{ request.route_url('user_form') }}" class="btn btn-secondary">User Registration</a>
+                    <a href="{{ request.route_url('sequence_form') }}" class="btn btn-info">Sequence Form</a>
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <h2>Form Features Demonstrated</h2>
+                <ul class="features-list">
+                    <li><strong>Schema Definition:</strong> Colander schemas for data validation</li>
+                    <li><strong>Widget Types:</strong> Text inputs, textareas, checkboxes, select dropdowns</li>
+                    <li><strong>Validation:</strong> Email, length, range, and custom validators</li>
+                    <li><strong>Error Handling:</strong> User-friendly error messages</li>
+                    <li><strong>Sequence Forms:</strong> Dynamic form arrays with add/remove functionality</li>
+                    <li><strong>Password Fields:</strong> Secure password input with confirmation</li>
+                    <li><strong>Boolean Fields:</strong> Checkboxes for optional features</li>
+                    <li><strong>Custom Validators:</strong> Password confirmation matching</li>
+                </ul>
+            </div>
+
+            <div class="demo-section">
+                <h2>Technical Implementation</h2>
+                <div class="code-examples">
+                    <h3>Schema Definition</h3>
+                    <pre><code>class Contact(colander.MappingSchema):
+    name = colander.SchemaNode(
+        colander.String(),
+        validator=colander.Length(min=2, max=100)
+    )
+    email = colander.SchemaNode(
+        colander.String(),
+        validator=colander.Email()
+    )</code></pre>
+
+                    <h3>Form Processing</h3>
+                    <pre><code>if 'submit' in request.POST:
+    controls = request.POST.items()
+    try:
+        appstruct = form.validate(controls)
+        # Process valid data
+    except deform.ValidationFailure as e:
+        return {'form': e.render()}</code></pre>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ request.static_url('tutorial:static/app.js') }}"></script>
+</body>
+</html>

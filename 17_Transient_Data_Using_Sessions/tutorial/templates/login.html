@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Session Management Demo</title>
+    <link rel="stylesheet" href="{{ request.static_url('tutorial:static/app.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+
+        <!-- Flash Messages -->
+        {% for message in request.session.pop_flash() %}
+        <div class="flash-message flash-{{ message.category or 'error' }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+
+        <!-- Login Form -->
+        <div class="login-form">
+            <form method="post">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required
+                           placeholder="Enter your username" maxlength="50">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <a href="{{ request.route_url('home') }}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Information -->
+        <div class="info-section">
+            <h3>What happens when you login?</h3>
+            <ul>
+                <li>Your username will be stored in the session</li>
+                <li>A login timestamp will be recorded</li>
+                <li>A counter will be initialized to 0</li>
+                <li>You'll be redirected to the home page</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="{{ request.static_url('tutorial:static/app.js') }}"></script>
+</body>
+</html>

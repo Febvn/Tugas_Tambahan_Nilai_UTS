@@ -1,19 +1,19 @@
-# Tutorial 09: Organizing Views With View Classes
+# Tutorial 09: Mengorganisir Views Dengan View Classes
 
-## Overview
-This tutorial introduces view classes in Pyramid, which provide a more organized way to handle multiple HTTP methods and related views. View classes allow grouping related view methods together and sharing common functionality through inheritance.
+## Gambaran Umum
+Tutorial ini memperkenalkan view classes dalam Pyramid, yang menyediakan cara yang lebih terorganisir untuk menangani multiple HTTP methods dan views terkait. View classes memungkinkan pengelompokan method view terkait bersama dan berbagi fungsionalitas umum melalui inheritance.
 
-## Key Concepts
+## Konsep Kunci
 
 ### View Classes vs Function-Based Views
-View classes offer better organization for complex applications with multiple HTTP methods per route.
+View classes menawarkan organisasi yang lebih baik untuk aplikasi kompleks dengan multiple HTTP methods per route.
 
-### Class-Based View Configuration
-Using `@view_defaults` and `@view_config` decorators on classes and methods.
+### Konfigurasi Class-Based View
+Menggunakan decorator `@view_defaults` dan `@view_config` pada kelas dan method.
 
-## Implementation Details
+## Detail Implementasi
 
-### View Class Structure
+### Struktur View Class
 ```python
 @view_defaults(route_name='home', renderer='string')
 class TutorialViews:
@@ -29,85 +29,85 @@ class TutorialViews:
         return 'Home View POST'
 ```
 
-### Decorator Usage
-- `@view_defaults`: Sets default configuration for all methods in the class
-- `@view_config`: Configures individual view methods, can override defaults
+### Penggunaan Decorator
+- `@view_defaults`: Mengatur konfigurasi default untuk semua method dalam kelas
+- `@view_config`: Mengkonfigurasi method view individual, dapat override defaults
 
-### Request Object Access
-View classes receive the request object in their constructor, making it available to all methods.
+### Akses Objek Request
+View classes menerima objek request dalam constructor mereka, membuatnya tersedia untuk semua method.
 
-## View Class Patterns
+## Pola View Class
 
 ### Method-Based Dispatch
-Different HTTP methods handled by different methods in the same class.
+HTTP methods berbeda ditangani oleh method berbeda dalam kelas yang sama.
 
 ### Inheritance
-Classes can inherit from base view classes to share common functionality.
+Kelas dapat mewarisi dari base view classes untuk berbagi fungsionalitas umum.
 
 ### Multiple Classes per Route
-Different classes can handle different aspects of the same route.
+Kelas berbeda dapat menangani aspek berbeda dari route yang sama.
 
-## Advantages of View Classes
+## Keuntungan View Classes
 
-### Organization
-Related views grouped together logically.
+### Organisasi
+Views terkait dikelompokkan bersama secara logis.
 
 ### Code Reuse
-Common functionality can be shared through inheritance.
+Fungsionalitas umum dapat dibagikan melalui inheritance.
 
 ### Method Dispatch
-Clean separation of GET, POST, PUT, DELETE handlers.
+Pemisahan yang bersih dari handler GET, POST, PUT, DELETE.
 
 ### State Management
-Instance variables can maintain state across method calls.
+Instance variables dapat mempertahankan state antar pemanggilan method.
 
-## Configuration Options
+## Opsi Konfigurasi
 
 ### Route-Specific Defaults
 ```python
 @view_defaults(route_name='home')
 ```
 
-### HTTP Method Specification
+### Spesifikasi HTTP Method
 ```python
 @view_config(request_method='GET')
 @view_config(request_method='POST')
 ```
 
-### Renderer Specification
+### Spesifikasi Renderer
 ```python
 @view_defaults(renderer='json')
 ```
 
-## Analysis
+## Analisis
 
-### When to Use View Classes
-1. **Multiple HTTP Methods**: When a route needs to handle GET, POST, etc.
-2. **Shared State**: When views need to share data or functionality
-3. **Complex Logic**: When view logic benefits from object-oriented organization
-4. **Large Applications**: When function-based views become unwieldy
+### Kapan Menggunakan View Classes
+1. **Multiple HTTP Methods**: Ketika route perlu menangani GET, POST, dll.
+2. **Shared State**: Ketika views perlu berbagi data atau fungsionalitas
+3. **Complex Logic**: Ketika view logic mendapat manfaat dari organisasi object-oriented
+4. **Large Applications**: Ketika function-based views menjadi tidak praktis
 
 ### Function-Based vs Class-Based Views
-- **Function-Based**: Simple, straightforward, good for basic CRUD
-- **Class-Based**: Complex applications, REST APIs, shared functionality
+- **Function-Based**: Sederhana, straightforward, bagus untuk CRUD dasar
+- **Class-Based**: Aplikasi kompleks, REST APIs, fungsionalitas bersama
 
 ### Best Practices
-1. **Single Responsibility**: Each class should handle one logical resource
-2. **HTTP Method Naming**: Use descriptive method names (get, post, put, delete)
-3. **Inheritance Wisely**: Don't over-engineer with deep inheritance hierarchies
-4. **Request Storage**: Store request in self.request for easy access
+1. **Single Responsibility**: Setiap kelas harus menangani satu resource logis
+2. **HTTP Method Naming**: Gunakan nama method yang deskriptif (get, post, put, delete)
+3. **Inheritance Wisely**: Jangan over-engineer dengan hierarki inheritance yang dalam
+4. **Request Storage**: Simpan request dalam self.request untuk akses mudah
 
-### Common Patterns
-1. **REST Resources**: Classes handling CRUD operations
-2. **Form Handling**: GET for display, POST for processing
-3. **API Endpoints**: Different methods for different operations
-4. **Wizard Flows**: Multi-step processes with shared state
+### Pola Umum
+1. **REST Resources**: Kelas yang menangani operasi CRUD
+2. **Form Handling**: GET untuk display, POST untuk processing
+3. **API Endpoints**: Method berbeda untuk operasi berbeda
+4. **Wizard Flows**: Proses multi-step dengan shared state
 
 ### Testing View Classes
-- Test individual methods
-- Mock request object in constructor
-- Test different HTTP methods separately
-- Verify correct responses for each scenario
+- Test method individual
+- Mock objek request dalam constructor
+- Test HTTP methods berbeda secara terpisah
+- Verifikasi responses yang benar untuk setiap skenario
 
-## Conclusion
-View classes provide a powerful way to organize complex view logic in Pyramid applications. They enable better code organization, reusability, and maintainability, especially for applications with multiple HTTP methods per route or complex view hierarchies. Understanding when to use view classes versus function-based views is key to building scalable Pyramid applications.
+## Kesimpulan
+View classes menyediakan cara yang powerful untuk mengorganisir logic view kompleks dalam aplikasi Pyramid. Mereka memungkinkan organisasi kode yang lebih baik, reusability, dan maintainability, terutama untuk aplikasi dengan multiple HTTP methods per route atau hierarki view yang kompleks. Memahami kapan menggunakan view classes versus function-based views adalah kunci untuk membangun aplikasi Pyramid yang scalable.

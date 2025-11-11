@@ -1,22 +1,22 @@
-# Tutorial 11: Dispatching URLs To Views With Routing
+# Tutorial 11: Dispatching URLs Ke Views Dengan Routing
 
-## Overview
-This tutorial introduces Pyramid's URL routing system, which maps URLs to view functions. Routing allows for clean, meaningful URLs and separates URL structure from view logic.
+## Gambaran Umum
+Tutorial ini memperkenalkan sistem URL routing Pyramid, yang memetakan URLs ke fungsi view. Routing memungkinkan URLs yang bersih dan bermakna serta memisahkan struktur URL dari logic view.
 
-## Key Concepts
+## Konsep Kunci
 
-### Route Configuration
-Routes map URL patterns to named routes that can be referenced in views.
+### Konfigurasi Route
+Routes memetakan pola URL ke named routes yang dapat direferensikan dalam views.
 
-### URL Parameters
-Extracting dynamic values from URLs using route patterns.
+### Parameter URL
+Mengekstrak nilai dinamis dari URLs menggunakan pola route.
 
 ### HTTP Exceptions
-Using Pyramid's exception classes for redirects and error responses.
+Menggunakan kelas exception Pyramid untuk redirects dan error responses.
 
-## Implementation Details
+## Detail Implementasi
 
-### Route Definition
+### Definisi Route
 ```python
 config.add_route('home', '/')
 config.add_route('hello', '/howdy/{name}')
@@ -24,7 +24,7 @@ config.add_route('redirect', '/goto')
 config.add_route('gone', '/gone')
 ```
 
-### Parameter Extraction
+### Ekstraksi Parameter
 ```python
 @view_config(route_name='hello')
 def hello(request):
@@ -45,112 +45,112 @@ def gone(request):
     return HTTPGone()
 ```
 
-## Route Patterns
+## Pola Route
 
 ### Static Routes
-Simple routes that match exact URLs.
+Routes sederhana yang mencocokkan URLs yang exact.
 
 ### Dynamic Routes
-Routes with placeholders for variable parts.
+Routes dengan placeholder untuk bagian yang variabel.
 
-### Optional Parameters
-Routes with optional path segments.
+### Parameter Opsional
+Routes dengan segmen path opsional.
 
 ### Regular Expression Routes
-Advanced pattern matching with regex.
+Pattern matching lanjutan dengan regex.
 
-## URL Generation
+## Generasi URL
 
 ### Route URLs
-Generating URLs from route names and parameters.
+Menghasilkan URLs dari nama route dan parameter.
 
 ### Reverse Routing
-Creating URLs programmatically instead of hardcoding.
+Membuat URLs secara programmatic alih-alih hardcoding.
 
-### URL Building
-Constructing URLs with query parameters and fragments.
+### Pembangunan URL
+Membangun URLs dengan query parameters dan fragments.
 
-## Route Matching
+## Pencocokan Route
 
 ### Pattern Matching
-How Pyramid matches URLs to routes.
+Bagaimana Pyramid mencocokkan URLs ke routes.
 
 ### Precedence
-Order of route evaluation.
+Urutan evaluasi route.
 
 ### Fallback Routes
-Default routes for unmatched URLs.
+Routes default untuk URLs yang tidak cocok.
 
 ## HTTP Exceptions
 
 ### Redirects
-HTTPFound for temporary redirects.
+HTTPFound untuk temporary redirects.
 
 ### Permanent Redirects
-HTTPMovedPermanently for permanent moves.
+HTTPMovedPermanently untuk permanent moves.
 
 ### Error Responses
-HTTPNotFound, HTTPForbidden, etc.
+HTTPNotFound, HTTPForbidden, dll.
 
 ### Custom Exceptions
-Creating application-specific exceptions.
+Membuat exception khusus aplikasi.
 
-## Advanced Routing
+## Routing Lanjutan
 
 ### Route Predicates
-Filtering routes based on conditions.
+Memfilter routes berdasarkan kondisi.
 
 ### Custom Route Factories
-Advanced route configuration.
+Konfigurasi route lanjutan.
 
 ### Subdomain Routing
-Routing based on subdomain.
+Routing berdasarkan subdomain.
 
 ### Internationalization
-Localized URL routing.
+URL routing yang dilokalkan.
 
-## Analysis
+## Analisis
 
 ### Routing vs Traversal
-URL dispatch vs object traversal approaches.
+Pendekatan URL dispatch vs object traversal.
 
 ### RESTful URLs
-Designing clean, meaningful URL structures.
+Mendesain struktur URL yang bersih dan bermakna.
 
-### SEO Considerations
-URL structure impact on search engine optimization.
+### Pertimbangan SEO
+Dampak struktur URL pada search engine optimization.
 
-### Security Implications
-Avoiding URL-based attacks through proper routing.
+### Implikasi Keamanan
+Menghindari serangan berbasis URL melalui routing yang proper.
 
-### Performance
-Route matching efficiency and caching.
+### Performa
+Efisiensi pencocokan route dan caching.
 
 ## Best Practices
 
-### URL Design
-- Use descriptive, hierarchical URLs
-- Keep URLs short and memorable
-- Use lowercase with hyphens for readability
-- Avoid query parameters when possible
+### Desain URL
+- Gunakan URLs yang deskriptif dan hierarkis
+- Buat URLs pendek dan mudah diingat
+- Gunakan lowercase dengan hyphens untuk readability
+- Hindari query parameters jika memungkinkan
 
-### Route Organization
-- Group related routes logically
-- Use consistent naming conventions
-- Document route purposes
-- Plan for future URL changes
+### Organisasi Route
+- Kelompokkan routes terkait secara logis
+- Gunakan konvensi penamaan yang konsisten
+- Dokumentasikan tujuan route
+- Rencanakan untuk perubahan URL di masa depan
 
 ### Error Handling
-- Use appropriate HTTP status codes
-- Provide meaningful error messages
-- Handle edge cases gracefully
-- Log errors for debugging
+- Gunakan kode status HTTP yang tepat
+- Berikan pesan error yang bermakna
+- Tangani edge cases dengan baik
+- Log errors untuk debugging
 
 ### Testing
-- Test all route variations
-- Verify parameter extraction
-- Check error conditions
-- Validate URL generation
+- Test semua variasi route
+- Verifikasi ekstraksi parameter
+- Periksa kondisi error
+- Validasi generasi URL
 
-## Conclusion
-URL routing is a fundamental aspect of web application development. Pyramid's routing system provides powerful tools for creating clean, maintainable URL structures that enhance both user experience and application architecture. Understanding routing patterns and HTTP exceptions enables developers to build robust web applications with proper URL handling and error management.
+## Kesimpulan
+URL routing adalah aspek fundamental dari pengembangan aplikasi web. Sistem routing Pyramid menyediakan tools yang powerful untuk membuat struktur URL yang bersih dan maintainable yang meningkatkan user experience dan arsitektur aplikasi. Memahami pola routing dan HTTP exceptions memungkinkan developer membangun aplikasi web yang robust dengan penanganan URL dan error management yang proper.

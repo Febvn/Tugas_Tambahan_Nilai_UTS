@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="pyramid web application">
+    <meta name="author" content="Pylons Project">
+    <link rel="shortcut icon" href="{{ request.static_url('tutorial:static/pyramid-16x16.png') }}">
+
+    <title>Quick Tutorial: {{ name }}</title>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/flatly/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ request.static_url('tutorial:static/app.css') }}">
+</head>
+
+<body>
+    <div class="starter-template">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <img class="logo img-responsive center-block" src="{{ request.static_url('tutorial:static/pyramid.png') }}">
+                </div>
+                <div class="col-md-10">
+                    <div class="content">
+                        <h1><span class="font-semi-bold">Pyramid</span> <span class="smaller">Tutorial</span></h1>
+                        <p class="lead">Welcome <span class="font-normal">{{ logged_in or 'visitor' }}</span>!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>Sites</h3>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-8">
+                    <h3>Quick Tutorial Chapters</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/index.html">Quick Tutorial</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/cookiecutters.html">Cookiecutters</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/environment.html">Environment</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/packages.html">Packages</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/ini.html">INI Files</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/debugtoolbar.html">Debug Toolbar</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/unit_testing.html">Unit Testing</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/functional_testing.html">Functional Testing</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/views.html">Views</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/view_classes.html">View Classes</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/routing.html">Routing</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/templating.html">Templating</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/static_assets.html">Static Assets</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/json_renderers.html">JSON Renderers</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/view_classes.html">More View Classes</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/logging.html">Logging</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/sessions.html">Sessions</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/forms.html">Forms</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/databases.html">Databases</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/authentication.html">Authentication</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/authorization.html">Authorization</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="{{ request.static_url('tutorial:static/app.js') }}"></script>
+</body>
+</html>

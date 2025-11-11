@@ -1,19 +1,19 @@
-# Tutorial 10: Handling Web Requests and Responses
+# Tutorial 10: Menangani Web Requests dan Responses
 
-## Overview
-This tutorial demonstrates how to handle HTTP requests and create custom responses in Pyramid applications. It covers the Request and Response objects, HTTP methods, and response customization.
+## Gambaran Umum
+Tutorial ini mendemonstrasikan cara menangani HTTP requests dan membuat custom responses dalam aplikasi Pyramid. Tutorial ini mencakup objek Request dan Response, HTTP methods, dan kustomisasi response.
 
-## Key Concepts
+## Konsep Kunci
 
-### Request Object
-The request object contains all information about the incoming HTTP request.
+### Objek Request
+Objek request berisi semua informasi tentang HTTP request yang masuk.
 
-### Response Object
-Pyramid's Response object allows full control over HTTP responses.
+### Objek Response
+Objek Response Pyramid memungkinkan kontrol penuh atas HTTP responses.
 
-## Implementation Details
+## Detail Implementasi
 
-### Basic Response Creation
+### Pembuatan Response Dasar
 ```python
 from pyramid.response import Response
 
@@ -22,125 +22,125 @@ def home(request):
     return Response('Home View')
 ```
 
-### HTTP Method Handling
-Different view functions for different HTTP methods on the same route.
+### Penanganan HTTP Method
+Fungsi view berbeda untuk HTTP methods berbeda pada route yang sama.
 
-### Response Customization
-- Content-Type headers
-- Status codes
-- Custom headers
-- Response bodies
+### Kustomisasi Response
+- Header Content-Type
+- Kode status
+- Header kustom
+- Body response
 
-## Request Object Features
+## Fitur Objek Request
 
-### Accessing Request Data
-- `request.method`: HTTP method (GET, POST, etc.)
-- `request.url`: Full URL
-- `request.path`: URL path
-- `request.params`: Query parameters and POST data
+### Mengakses Data Request
+- `request.method`: HTTP method (GET, POST, dll.)
+- `request.url`: URL lengkap
+- `request.path`: Path URL
+- `request.params`: Query parameters dan POST data
 - `request.headers`: HTTP headers
-- `request.cookies`: Cookie data
+- `request.cookies`: Data cookie
 
-### Request Processing
-- Parameter extraction
-- Header inspection
+### Pemrosesan Request
+- Ekstraksi parameter
+- Inspeksi header
 - Content negotiation
-- Authentication data
+- Data autentikasi
 
-## Response Object Features
+## Fitur Objek Response
 
-### Response Creation
+### Pembuatan Response
 ```python
 response = Response('Hello World')
 response.status_int = 200
 response.content_type = 'text/plain'
 ```
 
-### Response Types
+### Jenis Response
 - Text responses
 - JSON responses
 - File responses
 - Redirect responses
 - Error responses
 
-### Response Headers
+### Header Response
 - Content-Type
 - Cache-Control
-- Custom headers
+- Header kustom
 - Cookies
 
 ## HTTP Methods
 
 ### GET Requests
-Retrieving data from the server.
+Mengambil data dari server.
 
 ### POST Requests
-Submitting data to be processed.
+Mengirimkan data untuk diproses.
 
 ### PUT Requests
-Updating existing resources.
+Memperbarui resource yang ada.
 
 ### DELETE Requests
-Removing resources.
+Menghapus resources.
 
 ## Content Types
 
 ### Text/HTML
-Basic text and HTML responses.
+Response text dan HTML dasar.
 
 ### JSON
-Structured data responses.
+Response data terstruktur.
 
 ### XML
-Markup language responses.
+Response markup language.
 
 ### Binary
-File downloads and binary data.
+Download file dan data binary.
 
 ## Error Handling
 
-### HTTP Status Codes
+### Kode Status HTTP
 - 200 OK
 - 404 Not Found
 - 500 Internal Server Error
-- Custom status codes
+- Kode status kustom
 
 ### Exception Views
-Handling exceptions with custom responses.
+Menangani exception dengan custom responses.
 
-## Analysis
+## Analisis
 
-### Request-Response Cycle
-1. Client sends HTTP request
-2. Pyramid matches route and view
-3. View function receives request object
-4. View processes request and creates response
-5. Response sent back to client
+### Siklus Request-Response
+1. Client mengirim HTTP request
+2. Pyramid mencocokkan route dan view
+3. Fungsi view menerima objek request
+4. View memproses request dan membuat response
+5. Response dikirim kembali ke client
 
 ### Best Practices
-1. **Use appropriate HTTP methods**: GET for retrieval, POST for creation
-2. **Set correct content types**: text/html, application/json, etc.
-3. **Handle errors gracefully**: Return proper status codes and messages
-4. **Validate input**: Check request parameters and data
-5. **Security considerations**: Sanitize input, prevent XSS
+1. **Gunakan HTTP methods yang tepat**: GET untuk retrieval, POST untuk creation
+2. **Set content types yang benar**: text/html, application/json, dll.
+3. **Tangani error dengan baik**: Kembalikan kode status dan pesan yang proper
+4. **Validasi input**: Periksa parameter dan data request
+5. **Pertimbangan keamanan**: Sanitasi input, cegah XSS
 
-### Common Patterns
-1. **RESTful APIs**: Different methods for CRUD operations
-2. **Form handling**: GET for display, POST for submission
-3. **AJAX endpoints**: JSON responses for JavaScript clients
-4. **File serving**: Binary responses for downloads
+### Pola Umum
+1. **RESTful APIs**: Method berbeda untuk operasi CRUD
+2. **Form handling**: GET untuk display, POST untuk submission
+3. **AJAX endpoints**: JSON responses untuk JavaScript clients
+4. **File serving**: Binary responses untuk downloads
 
-### Performance Considerations
-- Minimize response size
-- Use appropriate caching headers
-- Compress responses when possible
-- Stream large responses
+### Pertimbangan Performa
+- Minimalkan ukuran response
+- Gunakan caching headers yang tepat
+- Kompresi responses jika memungkinkan
+- Stream responses yang besar
 
 ### Testing Request/Response Handling
-- Test different HTTP methods
-- Verify response content and headers
-- Check error conditions
-- Validate input handling
+- Test HTTP methods berbeda
+- Verifikasi konten dan headers response
+- Periksa kondisi error
+- Validasi penanganan input
 
-## Conclusion
-Understanding request and response handling is fundamental to web development with Pyramid. The framework provides powerful tools for processing incoming requests and crafting appropriate responses, enabling developers to build robust and flexible web applications that properly handle the HTTP protocol.
+## Kesimpulan
+Memahami penanganan request dan response adalah fundamental untuk web development dengan Pyramid. Framework ini menyediakan tools yang powerful untuk memproses incoming requests dan membuat responses yang tepat, memungkinkan developer membangun aplikasi web yang robust dan fleksibel yang menangani protokol HTTP dengan proper.

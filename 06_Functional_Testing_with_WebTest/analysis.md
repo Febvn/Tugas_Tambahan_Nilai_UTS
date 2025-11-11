@@ -1,27 +1,27 @@
-# Tutorial 06: Functional Testing with WebTest
+# Tutorial 06: Functional Testing dengan WebTest
 
-## Overview
-This tutorial demonstrates functional testing in Pyramid applications using WebTest. Functional testing focuses on testing the application from the user's perspective, simulating HTTP requests and verifying responses.
+## Gambaran Umum
+Tutorial ini mendemonstrasikan functional testing dalam aplikasi Pyramid menggunakan WebTest. Functional testing berfokus pada pengujian aplikasi dari perspektif pengguna, mensimulasikan HTTP requests dan memverifikasi responses.
 
-## Key Concepts
+## Konsep Kunci
 
 ### Functional Testing vs Unit Testing
-- **Unit Testing**: Tests individual components in isolation
-- **Functional Testing**: Tests the entire application stack end-to-end
+- **Unit Testing**: Menguji komponen individual secara terpisah
+- **Functional Testing**: Menguji seluruh stack aplikasi end-to-end
 
-### WebTest Framework
-WebTest is a Python library that provides a simple interface for testing WSGI applications. It allows you to make HTTP requests to your application and inspect the responses.
+### Framework WebTest
+WebTest adalah library Python yang menyediakan interface sederhana untuk testing aplikasi WSGI. Library ini memungkinkan Anda membuat HTTP requests ke aplikasi dan memeriksa responses.
 
-## Implementation Details
+## Detail Implementasi
 
-### Application Structure
-The application consists of:
-- `setup.py`: Defines dependencies including `webtest`
-- `tutorial/__init__.py`: Main application configuration with routes
-- `tutorial/views.py`: Simple view functions returning string responses
-- `tests.py`: Both unit and functional tests
+### Struktur Aplikasi
+Aplikasi terdiri dari:
+- `setup.py`: Mendefinisikan dependensi termasuk `webtest`
+- `tutorial/__init__.py`: Konfigurasi aplikasi utama dengan routes
+- `tutorial/views.py`: Fungsi view sederhana yang mengembalikan string responses
+- `tests.py`: Unit tests dan functional tests
 
-### Test Classes
+### Kelas Test
 
 #### ViewTests (Unit Tests)
 ```python
@@ -39,7 +39,7 @@ class ViewTests(unittest.TestCase):
         self.assertEqual(response, 'Welcome!')
 ```
 
-This class tests individual view functions using Pyramid's testing utilities.
+Kelas ini menguji fungsi view individual menggunakan utilities testing Pyramid.
 
 #### FunctionalTests (Functional Tests)
 ```python
@@ -55,34 +55,34 @@ class FunctionalTests(unittest.TestCase):
         self.assertIn(b'Welcome!', res.body)
 ```
 
-This class tests the full application stack using WebTest's TestApp.
+Kelas ini menguji full application stack menggunakan TestApp dari WebTest.
 
-## WebTest Features
+## Fitur WebTest
 
-### TestApp Methods
-- `get(url, status=None)`: Makes a GET request
-- `post(url, data, status=None)`: Makes a POST request
-- `put()`, `delete()`, etc.: Other HTTP methods
+### Method TestApp
+- `get(url, status=None)`: Membuat GET request
+- `post(url, data, status=None)`: Membuat POST request
+- `put()`, `delete()`, dll.: HTTP methods lainnya
 
-### Response Object
-- `res.status`: HTTP status code
-- `res.body`: Response body as bytes
-- `res.json`: Parsed JSON response
-- `res.headers`: Response headers
+### Objek Response
+- `res.status`: Kode status HTTP
+- `res.body`: Body response sebagai bytes
+- `res.json`: Response JSON yang di-parse
+- `res.headers`: Headers response
 
-## Running Tests
+## Menjalankan Tests
 
-### Installation
+### Instalasi
 ```bash
 pip install -e .
 ```
 
-### Execute Tests
+### Eksekusi Tests
 ```bash
 python -m pytest tests.py -v
 ```
 
-### Expected Output
+### Output yang Diharapkan
 ```
 tests.py::ViewTests::test_home PASSED
 tests.py::ViewTests::test_hello PASSED
@@ -90,37 +90,37 @@ tests.py::FunctionalTests::test_home PASSED
 tests.py::FunctionalTests::test_hello PASSED
 ```
 
-## Analysis
+## Analisis
 
-### Advantages of Functional Testing
-1. **End-to-End Validation**: Tests the complete request-response cycle
-2. **Integration Testing**: Verifies all components work together
-3. **User Perspective**: Simulates real user interactions
-4. **Regression Prevention**: Catches issues that unit tests might miss
+### Keuntungan Functional Testing
+1. **Validasi End-to-End**: Menguji siklus request-response lengkap
+2. **Integration Testing**: Memverifikasi semua komponen bekerja bersama
+3. **Perspektif Pengguna**: Mensimulasikan interaksi pengguna nyata
+4. **Pencegahan Regresi**: Menangkap masalah yang mungkin terlewat oleh unit tests
 
-### WebTest Benefits
-1. **Simple API**: Easy to write and understand tests
-2. **WSGI Compatible**: Works with any WSGI application
-3. **Comprehensive**: Supports all HTTP methods and features
-4. **Fast**: Lightweight and quick to execute
+### Manfaat WebTest
+1. **API Sederhana**: Mudah menulis dan memahami tests
+2. **Kompatibel WSGI**: Bekerja dengan aplikasi WSGI apapun
+3. **Komprehensif**: Mendukung semua HTTP methods dan fitur
+4. **Cepat**: Ringan dan cepat dieksekusi
 
 ### Best Practices
-1. **Test Status Codes**: Always verify expected HTTP status codes
-2. **Check Content**: Validate response content and structure
-3. **Test Edge Cases**: Include error conditions and edge cases
-4. **Organize Tests**: Group related tests in classes
-5. **Use Fixtures**: Set up test data appropriately
+1. **Test Status Codes**: Selalu verifikasi kode status HTTP yang diharapkan
+2. **Periksa Konten**: Validasi konten dan struktur response
+3. **Test Edge Cases**: Sertakan kondisi error dan edge cases
+4. **Organisasi Tests**: Kelompokkan tests terkait dalam kelas
+5. **Gunakan Fixtures**: Setup data test dengan tepat
 
-### Comparison with Unit Tests
-- **Unit Tests**: Fast, isolated, test individual functions
-- **Functional Tests**: Slower, integrated, test complete workflows
+### Perbandingan dengan Unit Tests
+- **Unit Tests**: Cepat, terisolasi, menguji fungsi individual
+- **Functional Tests**: Lebih lambat, terintegrasi, menguji workflow lengkap
 
-### When to Use Functional Tests
-- Testing complete user workflows
-- Verifying integration between components
+### Kapan Menggunakan Functional Tests
+- Testing workflow pengguna lengkap
+- Memverifikasi integrasi antar komponen
 - Testing API endpoints
-- Validating error handling
+- Validasi error handling
 - Regression testing
 
-## Conclusion
-Functional testing with WebTest provides a powerful way to ensure your Pyramid application works correctly from the user's perspective. It complements unit testing by validating the entire application stack and catching integration issues that unit tests might miss.
+## Kesimpulan
+Functional testing dengan WebTest menyediakan cara yang powerful untuk memastikan aplikasi Pyramid Anda bekerja dengan benar dari perspektif pengguna. Ini melengkapi unit testing dengan memvalidasi seluruh application stack dan menangkap masalah integrasi yang mungkin terlewat oleh unit tests.

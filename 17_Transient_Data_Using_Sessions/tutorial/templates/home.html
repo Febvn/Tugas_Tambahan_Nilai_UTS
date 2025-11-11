@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Management Demo - Home</title>
+    <link rel="stylesheet" href="{{ request.static_url('tutorial:static/app.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Session Management Demo</h1>
+
+        <!-- Flash Messages -->
+        {% for message in request.session.pop_flash() %}
+        <div class="flash-message flash-{{ message.category or 'info' }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+
+        <!-- Session Information -->
+        <div class="session-info">
+            <h2>Current Session Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <strong>Username:</strong> {{ username or 'Not logged in' }}
+                </div>
+                <div class="info-item">
+                    <strong>Counter:</strong> {{ counter }}
+                </div>
+                <div class="info-item">
+                    <strong>Login Time:</strong> {{ login_time or 'N/A' }}
+                </div>
+                <div class="info-item">
+                    <strong>Session ID:</strong> {{ session_id }}
+                </div>
+                <div class="info-item">
+                    <strong>Session Keys:</strong>
+                    <ul>
+                        {% for key in session_keys %}
+                        <li>{{ key }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="actions">
+            {% if not username %}
+            <a href="{{ request.route_url('login') }}" class="btn btn-primary">Login</a>
+            {% else %}
+            <a href="{{ request.route_url('logout') }}" class="btn btn-danger">Logout</a>
+            {% endif %}
+
+            <button onclick="incrementCounter()" class="btn btn-secondary">Increment Counter</button>
+            <a href="{{ request.route_url('flash_demo') }}" class="btn btn-info">Flash Messages Demo</a>
+        </div>
+
+        <!-- Counter Display -->
+        <div class="counter-display">
+            <h3>Counter Value: <span id="counter-value">{{ counter }}</span></h3>
+        </div>
+    </div>
+
+    <script src="{{ request.static_url('tutorial:static/app.js') }}"></script>
+    <script>
+        async function incrementCounter() {
+            try {
+                const response = await fetch("{{ request.route_url('counter') }}");
+                const data = await response.json();
+                document.getElementById('counter-value').textContent = data.counter;
+            } catch (error) {
+                console.error('Error incrementing counter:', error);
+            }
+        }
+    </script>
+</body>
+</html>

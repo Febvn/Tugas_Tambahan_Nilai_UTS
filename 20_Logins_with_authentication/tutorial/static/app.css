@@ -1,0 +1,30 @@
+body {
+    padding-top: 20px;
+}
+
+.starter-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+
+.content {
+    text-align: left;
+    max-width: 800px;
+    margin: 0 auto 20px auto;
+}
+
+.font-semi-bold {
+    font-weight: 600;
+}
+
+.smaller {
+    font-size: smaller;
+}
+
+.font-normal {
+    font-weight: normal;
+}
+
+.logo {
+    margin-bottom: 20px;
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ request.static_url('tutorial:static/app.css') }}">
+    <link rel="stylesheet" href="{{ request.static_url('deform_static:css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ request.static_url('deform_static:css/form.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ title }}</h1>
+            <p>Dynamic sequence form with add/remove functionality</p>
+            <a href="{{ request.route_url('home') }}" class="btn btn-secondary">← Back to Home</a>
+        </header>
+
+        <main>
+            <div class="form-container">
+                {{ form|safe }}
+            </div>
+
+            <div class="form-info">
+                <h3>Sequence Form Features</h3>
+                <ul>
+                    <li><strong>Form Title:</strong> Required title for the form</li>
+                    <li><strong>Items:</strong> Dynamic list of name-value pairs</li>
+                    <li><strong>Add/Remove:</strong> JavaScript-powered item management</li>
+                    <li><strong>Validation:</strong> Each item validated individually</li>
+                </ul>
+
+                <h3>How to Use</h3>
+                <ol>
+                    <li>Enter a title for your form</li>
+                    <li>Click "Add Item" to add name-value pairs</li>
+                    <li>Fill in the name and value for each item</li>
+                    <li>Use the remove button to delete items</li>
+                    <li>Submit when you have all desired items</li>
+                </ol>
+
+                <h3>Technical Details</h3>
+                <div class="code-example">
+                    <pre><code>class SequenceForm(colander.MappingSchema):
+    title = colander.SchemaNode(colander.String())
+    items = colander.SchemaNode(
+        colander.Sequence(),
+        SequenceItem(),
+        widget=deform.widget.SequenceWidget(min_len=1, max_len=10)
+    )</code></pre>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ request.static_url('tutorial:static/app.js') }}"></script>
+    <script src="{{ request.static_url('deform_static:js/jquery-2.0.3.min.js') }}"></script>
+    <script src="{{ request.static_url('deform_static:js/bootstrap.min.js') }}"></script>
+</body>
+</html>

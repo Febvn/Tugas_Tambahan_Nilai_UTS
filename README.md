@@ -26,4 +26,4 @@ Repository ini berisi implementasi dan analisis dari 21 tutorial Pyramid web fra
 - 20_Logins_with_authentication
 - 21_Protecting_Resources_With_Authorization
 
-Setiap folder berisi kode implementasi tutorial, file analisis.md, dan file pendukung lainnya.
+Setiap folder berisi kode implementasi tutorial, file analysis.md, dan file pendukung lainnya.

@@ -1,24 +1,24 @@
-# Tutorial 08: HTML Generation With Templating
+# Tutorial 08: Generasi HTML Dengan Templating
 
-## Overview
-This tutorial introduces HTML templating in Pyramid applications using Chameleon templates. Templates allow separation of presentation logic from application logic, enabling dynamic HTML generation with data passed from views.
+## Gambaran Umum
+Tutorial ini memperkenalkan HTML templating dalam aplikasi Pyramid menggunakan Chameleon templates. Templates memungkinkan pemisahan presentation logic dari application logic, memungkinkan generasi HTML dinamis dengan data yang dikirim dari views.
 
-## Key Concepts
+## Konsep Kunci
 
-### Templating in Pyramid
-Templates are files that contain HTML with placeholders for dynamic content. Pyramid supports multiple templating engines, with Chameleon being the default.
+### Templating dalam Pyramid
+Templates adalah file yang berisi HTML dengan placeholder untuk konten dinamis. Pyramid mendukung multiple templating engines, dengan Chameleon sebagai default.
 
 ### Chameleon Templates
-Chameleon is a fast, secure templating engine that compiles templates to Python bytecode. It uses TAL (Template Attribute Language) for dynamic content insertion.
+Chameleon adalah templating engine yang cepat dan aman yang mengkompilasi templates ke Python bytecode. Menggunakan TAL (Template Attribute Language) untuk penyisipan konten dinamis.
 
-## Implementation Details
+## Detail Implementasi
 
-### Template Configuration
+### Konfigurasi Template
 ```python
 config.add_static_view(name='static', path='tutorial:static')
 ```
 
-### View Functions with Templates
+### Fungsi View dengan Templates
 ```python
 @view_config(route_name='home', renderer='templates/home.pt')
 def home(request):
@@ -29,89 +29,89 @@ def hello(request):
     return {'name': 'Hello View'}
 ```
 
-### Template Syntax
-Chameleon templates use TAL attributes for dynamic content:
+### Sintaks Template
+Chameleon templates menggunakan atribut TAL untuk konten dinamis:
 
-- `${variable}` - Variable substitution
-- `tal:condition` - Conditional rendering
-- `tal:repeat` - Looping over collections
-- `tal:define` - Variable definition
+- `${variable}` - Substitusi variabel
+- `tal:condition` - Rendering kondisional
+- `tal:repeat` - Looping atas koleksi
+- `tal:define` - Definisi variabel
 
-## Template Structure
+## Struktur Template
 
 ### HTML5 Boilerplate
-Templates include proper HTML5 structure with:
-- DOCTYPE declaration
-- Meta tags for charset, viewport, description
-- Favicon links
-- Semantic HTML elements
+Templates mencakup struktur HTML5 yang proper dengan:
+- Deklarasi DOCTYPE
+- Meta tags untuk charset, viewport, description
+- Link favicon
+- Elemen HTML semantik
 
-### Static Asset Integration
-Templates reference static files using `request.static_url()`:
+### Integrasi Static Asset
+Templates mereferensi file statis menggunakan `request.static_url()`:
 ```html
 <img src="${request.static_url('tutorial:static/pyramid.png')}">
 <link rel="shortcut icon" href="${request.static_url('tutorial:static/pyramid-16x16.png')}">
 ```
 
-### URL Generation
-Templates use `request.route_url()` for internal links:
+### Generasi URL
+Templates menggunakan `request.route_url()` untuk link internal:
 ```html
 <a href="${request.route_url('hello')}">Hello World</a>
 ```
 
-## Template Files
+## File Template
 
 ### home.pt
-The home page template displays:
-- Pyramid logo and branding
-- Welcome message with dynamic name
-- Navigation links to other pages
+Template halaman home menampilkan:
+- Logo dan branding Pyramid
+- Pesan welcome dengan nama dinamis
+- Link navigasi ke halaman lain
 
 ### hello.pt
-The hello page template shows:
-- Similar structure to home.pt
-- Different welcome message
-- Link back to home page
+Template halaman hello menampilkan:
+- Struktur serupa dengan home.pt
+- Pesan welcome yang berbeda
+- Link kembali ke halaman home
 
 ## Static Assets
 
 ### Images
-- `pyramid.png` - Main Pyramid logo (150px height)
+- `pyramid.png` - Logo Pyramid utama (tinggi 150px)
 - `pyramid-16x16.png` - Favicon (16x16 pixels)
 
-### Asset Serving
-Static files are served through Pyramid's static view configuration, making them accessible via URLs like `/static/pyramid.png`.
+### Penyajian Asset
+File statis disajikan melalui konfigurasi static view Pyramid, membuatnya dapat diakses melalui URLs seperti `/static/pyramid.png`.
 
-## Analysis
+## Analisis
 
-### Advantages of Templating
-1. **Separation of Concerns**: HTML markup separate from Python logic
-2. **Maintainability**: Easier to modify presentation without touching code
-3. **Reusability**: Templates can be shared across views
-4. **Designer-Friendly**: HTML designers can work independently
+### Keuntungan Templating
+1. **Separation of Concerns**: Markup HTML terpisah dari logic Python
+2. **Maintainability**: Lebih mudah memodifikasi presentation tanpa menyentuh kode
+3. **Reusability**: Templates dapat dibagikan antar views
+4. **Designer-Friendly**: Designer HTML dapat bekerja secara independen
 
-### Chameleon vs Other Templating Engines
-1. **Chameleon**: Fast compilation, secure, XML-compliant
-2. **Jinja2**: More flexible syntax, better error messages
-3. **Mako**: Python-like syntax, good performance
+### Chameleon vs Templating Engines Lain
+1. **Chameleon**: Kompilasi cepat, aman, XML-compliant
+2. **Jinja2**: Sintaks lebih fleksibel, pesan error lebih baik
+3. **Mako**: Sintaks seperti Python, performa bagus
 
-### Template Best Practices
-1. **Semantic HTML**: Use proper HTML5 elements
-2. **Accessibility**: Include alt text, proper headings
-3. **Performance**: Minimize template complexity
-4. **Organization**: Group related templates in subdirectories
+### Best Practices Template
+1. **Semantic HTML**: Gunakan elemen HTML5 yang proper
+2. **Accessibility**: Sertakan alt text, heading yang proper
+3. **Performance**: Minimalkan kompleksitas template
+4. **Organization**: Kelompokkan templates terkait dalam subdirektori
 
 ### Template Inheritance
-While not demonstrated here, Chameleon supports:
-- Template inheritance with METAL
-- Macro definitions and usage
-- Slot filling for flexible layouts
+Meskipun tidak didemonstrasikan di sini, Chameleon mendukung:
+- Template inheritance dengan METAL
+- Definisi dan penggunaan macro
+- Slot filling untuk layout yang fleksibel
 
-### Static Asset Management
-1. **Versioning**: Cache-busting with versioned URLs
-2. **CDN Integration**: External hosting for performance
-3. **Minification**: Compressed CSS/JS for production
-4. **Organization**: Logical directory structure
+### Manajemen Static Asset
+1. **Versioning**: Cache-busting dengan versioned URLs
+2. **CDN Integration**: External hosting untuk performa
+3. **Minification**: CSS/JS terkompresi untuk production
+4. **Organization**: Struktur direktori yang logis
 
-## Conclusion
-Templating is essential for modern web applications, providing clean separation between presentation and logic. Chameleon's TAL syntax offers powerful yet secure template capabilities, making it an excellent choice for Pyramid applications. The combination of dynamic templates and static asset serving enables rich, interactive web experiences.
+## Kesimpulan
+Templating sangat penting untuk aplikasi web modern, menyediakan pemisahan yang bersih antara presentation dan logic. Sintaks TAL Chameleon menawarkan kemampuan template yang powerful namun aman, menjadikannya pilihan excellent untuk aplikasi Pyramid. Kombinasi template dinamis dan penyajian static asset memungkinkan pengalaman web yang kaya dan interaktif.

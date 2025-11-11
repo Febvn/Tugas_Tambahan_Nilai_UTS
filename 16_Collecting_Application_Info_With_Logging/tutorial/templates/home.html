@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ request.static_url('tutorial:static/app.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ title }}</h1>
+            <p>Application logging and information collection tutorial</p>
+        </header>
+
+        <main>
+            <div class="demo-section">
+                <h2>Available Companies</h2>
+                <p>Click on a company to view details (all requests are logged):</p>
+                <div class="company-list">
+                    {% for company in companies %}
+                    <div class="company-card">
+                        <h3><a href="/company/{{ company }}">{{ company.title() }}</a></h3>
+                        <a href="/company/{{ company }}/json" class="json-link">View JSON</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <h2>Try Different URLs (All Logged)</h2>
+                <ul class="url-examples">
+                    <li><a href="/hello/World">/hello/World</a> - Basic greeting</li>
+                    <li><a href="/hello/Alice">/hello/Alice</a> - Personalized greeting</li>
+                    <li><a href="/company/acme">/company/acme</a> - Company details</li>
+                    <li><a href="/company/globex/json">/company/globex/json</a> - Company JSON API</li>
+                    <li><a href="/logs">/logs</a> - Logging demonstration</li>
+                    <li><a href="/?debug=true">/?debug=true</a> - Debug information</li>
+                </ul>
+            </div>
+
+            <div class="demo-section">
+                <h2>API Endpoints</h2>
+                <p>Test the API endpoints (all requests are logged):</p>
+                <div class="api-tester">
+                    <button id="get-status-btn" class="btn">GET API Status</button>
+                    <div id="api-response" class="response-area"></div>
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <h2>Logging Features Demonstrated</h2>
+                <ul class="features-list">
+                    <li><strong>Request Logging:</strong> All incoming requests are logged with IP, method, and path</li>
+                    <li><strong>Response Logging:</strong> Successful operations and errors are logged</li>
+                    <li><strong>Performance Logging:</strong> Request processing times are tracked</li>
+                    <li><strong>Data Logging:</strong> Request payloads and responses are logged for debugging</li>
+                    <li><strong>Error Logging:</strong> Exceptions and validation errors are captured</li>
+                    <li><strong>Debug Logging:</strong> Detailed information for troubleshooting</li>
+                    <li><strong>Structured Logging:</strong> Consistent log format with timestamps and context</li>
+                </ul>
+            </div>
+
+            <div class="demo-section">
+                <h2>Log Levels</h2>
+                <div class="log-levels">
+                    <div class="log-level debug">DEBUG: Detailed diagnostic information</div>
+                    <div class="log-level info">INFO: General information about application operation</div>
+                    <div class="log-level warning">WARNING: Potential issues that don't stop execution</div>
+                    <div class="log-level error">ERROR: Serious problems that need attention</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ request.static_url('tutorial:static/app.js') }}"></script>
+</body>
+</html>

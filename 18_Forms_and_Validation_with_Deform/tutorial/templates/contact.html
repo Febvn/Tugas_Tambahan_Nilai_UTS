@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ request.static_url('tutorial:static/app.css') }}">
+    <link rel="stylesheet" href="{{ request.static_url('deform_static:css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ request.static_url('deform_static:css/form.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ title }}</h1>
+            <p>Get in touch with us using this validated contact form</p>
+            <a href="{{ request.route_url('home') }}" class="btn btn-secondary">← Back to Home</a>
+        </header>
+
+        <main>
+            <div class="form-container">
+                {{ form|safe }}
+            </div>
+
+            <div class="form-info">
+                <h3>Form Features</h3>
+                <ul>
+                    <li><strong>Name:</strong> Required, 2-100 characters</li>
+                    <li><strong>Email:</strong> Required, valid email format</li>
+                    <li><strong>Message:</strong> Required, 10-1000 characters</li>
+                </ul>
+
+                <h3>Validation Rules</h3>
+                <ul>
+                    <li>All fields are required</li>
+                    <li>Email must be in valid format (user@domain.com)</li>
+                    <li>Name must be between 2 and 100 characters</li>
+                    <li>Message must be between 10 and 1000 characters</li>
+                </ul>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ request.static_url('tutorial:static/app.js') }}"></script>
+    <script src="{{ request.static_url('deform_static:js/jquery-2.0.3.min.js') }}"></script>
+    <script src="{{ request.static_url('deform_static:js/bootstrap.min.js') }}"></script>
+</body>
+</html>

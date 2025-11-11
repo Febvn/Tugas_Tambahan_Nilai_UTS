@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="pyramid web application">
+    <meta name="author" content="Pylons Project">
+    <link rel="shortcut icon" href="{{ request.static_url('tutorial:static/pyramid-16x16.png') }}">
+
+    <title>Quick Tutorial: {{ name }}</title>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/flatly/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ request.static_url('tutorial:static/app.css') }}">
+</head>
+
+<body>
+    <div class="starter-template">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <img class="logo img-responsive center-block" src="{{ request.static_url('tutorial:static/pyramid.png') }}">
+                </div>
+                <div class="col-md-10">
+                    <div class="content">
+                        <h1><span class="font-semi-bold">Pyramid</span> <span class="smaller">Tutorial</span></h1>
+                        <p class="lead">Welcome <span class="font-normal">{{ request.authenticated_userid or 'visitor' }}</span>!</p>
+                        {% if user %}
+                        <p class="text-muted">Role: <strong>{{ user.role }}</strong></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>Navigation</h3>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/editor">Editor Page</a></li>
+                        <li class="active"><a href="/admin">Admin Page</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-8">
+                    <h3>Admin Page</h3>
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <span class="glyphicon glyphicon-lock"></span> Admin Access Only
+                            </h4>
+                        </div>
+                        <div class="panel-body">
+                            <p class="lead">You have <strong>admin</strong> permission!</p>
+                            <p>This page is only accessible to users with the <span class="label label-danger">Admin</span> role.</p>
+                            
+                            <hr>
+                            
+                            <h4>All Users in System:</h4>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Created</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for u in users %}
+                                    <tr>
+                                        <td>{{ u.id }}</td>
+                                        <td>{{ u.name }}</td>
+                                        <td>{{ u.email }}</td>
+                                        <td>
+                                            {% if u.role == 'admin' %}
+                                            <span class="label label-danger">{{ u.role }}</span>
+                                            {% elif u.role == 'editor' %}
+                                            <span class="label label-warning">{{ u.role }}</span>
+                                            {% else %}
+                                            <span class="label label-info">{{ u.role }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ u.date_created.strftime('%Y-%m-%d %H:%M') if u.date_created else 'N/A' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="{{ request.static_url('tutorial:static/app.js') }}"></script>
+</body>
+</html>

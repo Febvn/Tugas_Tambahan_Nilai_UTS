@@ -1,19 +1,19 @@
-# Tutorial 07: Basic Web Handling With Views
+# Tutorial 07: Penanganan Web Dasar Dengan Views
 
-## Overview
-This tutorial introduces the fundamental concepts of handling web requests in Pyramid applications using views. Views are the core components that process HTTP requests and return responses.
+## Gambaran Umum
+Tutorial ini memperkenalkan konsep fundamental penanganan web requests dalam aplikasi Pyramid menggunakan views. Views adalah komponen inti yang memproses HTTP requests dan mengembalikan responses.
 
-## Key Concepts
+## Konsep Kunci
 
-### Views in Pyramid
-Views are functions or classes that handle HTTP requests and return responses. They are the primary way Pyramid applications interact with users.
+### Views dalam Pyramid
+Views adalah fungsi atau kelas yang menangani HTTP requests dan mengembalikan responses. Mereka adalah cara utama aplikasi Pyramid berinteraksi dengan pengguna.
 
-### View Configuration
-Views are configured using the `@view_config` decorator, which tells Pyramid how to map URLs to view functions.
+### Konfigurasi View
+Views dikonfigurasi menggunakan decorator `@view_config`, yang memberitahu Pyramid cara memetakan URLs ke fungsi view.
 
-## Implementation Details
+## Detail Implementasi
 
-### View Functions
+### Fungsi View
 ```python
 @view_config(route_name='home', renderer='string')
 def home(request):
@@ -24,72 +24,72 @@ def hello(request):
     return 'Hello!'
 ```
 
-### View Configuration Parameters
-- `route_name`: Links the view to a route defined in the configurator
-- `renderer`: Specifies how to render the response (string, json, template, etc.)
+### Parameter Konfigurasi View
+- `route_name`: Menghubungkan view ke route yang didefinisikan dalam configurator
+- `renderer`: Menentukan cara merender response (string, json, template, dll.)
 
-### Request Object
-The `request` parameter contains information about the HTTP request:
-- `request.method`: HTTP method (GET, POST, etc.)
-- `request.url`: Full URL of the request
-- `request.params`: Query parameters and POST data
+### Objek Request
+Parameter `request` berisi informasi tentang HTTP request:
+- `request.method`: HTTP method (GET, POST, dll.)
+- `request.url`: URL lengkap dari request
+- `request.params`: Query parameters dan POST data
 - `request.matchdict`: URL path parameters
 
-## View Types
+## Jenis View
 
 ### Function-Based Views
-Simple functions decorated with `@view_config`. Best for straightforward request handling.
+Fungsi sederhana yang didekorasi dengan `@view_config`. Terbaik untuk penanganan request yang straightforward.
 
 ### Class-Based Views
-Classes that implement view methods. Useful for complex views with multiple HTTP method handlers.
+Kelas yang mengimplementasikan method view. Berguna untuk views kompleks dengan multiple HTTP method handlers.
 
-## Response Types
+## Jenis Response
 
 ### String Responses
-Using `renderer='string'` returns plain text responses.
+Menggunakan `renderer='string'` mengembalikan plain text responses.
 
 ### JSON Responses
-Using `renderer='json'` automatically serializes Python objects to JSON.
+Menggunakan `renderer='json'` secara otomatis menserialisasi objek Python ke JSON.
 
 ### Template Responses
-Using template renderers (like `renderer='templates/home.pt'`) renders HTML templates.
+Menggunakan template renderers (seperti `renderer='templates/home.pt'`) merender HTML templates.
 
-## Routing Integration
+## Integrasi Routing
 
-### Route Configuration
-Routes are defined in the configurator:
+### Konfigurasi Route
+Routes didefinisikan dalam configurator:
 ```python
 config.add_route('home', '/')
 config.add_route('hello', '/howdy')
 ```
 
 ### URL Dispatch
-Pyramid matches URLs to routes, then routes to views based on the `route_name` parameter.
+Pyramid mencocokkan URLs ke routes, kemudian routes ke views berdasarkan parameter `route_name`.
 
-## Analysis
+## Analisis
 
-### Advantages of View-Based Architecture
-1. **Separation of Concerns**: Views handle logic, templates handle presentation
-2. **Testability**: Views can be tested independently
-3. **Flexibility**: Multiple ways to configure and organize views
-4. **Scalability**: Easy to add new views and routes
+### Keuntungan Arsitektur Berbasis View
+1. **Separation of Concerns**: Views menangani logic, templates menangani presentation
+2. **Testability**: Views dapat ditest secara independen
+3. **Flexibility**: Banyak cara untuk mengkonfigurasi dan mengorganisir views
+4. **Scalability**: Mudah menambahkan views dan routes baru
 
-### View Configuration Patterns
-1. **Route-Based**: Views mapped to specific routes
-2. **Traversal-Based**: Views mapped to object traversal
-3. **Hybrid**: Combining route and traversal patterns
+### Pola Konfigurasi View
+1. **Route-Based**: Views dipetakan ke routes spesifik
+2. **Traversal-Based**: Views dipetakan ke object traversal
+3. **Hybrid**: Menggabungkan pola route dan traversal
 
 ### Best Practices
-1. **Keep Views Simple**: Delegate complex logic to other components
-2. **Use Appropriate Renderers**: Choose the right response format
-3. **Handle Errors Gracefully**: Implement proper error handling
-4. **Test Views Thoroughly**: Unit test view functions
+1. **Keep Views Simple**: Delegasikan logic kompleks ke komponen lain
+2. **Use Appropriate Renderers**: Pilih format response yang tepat
+3. **Handle Errors Gracefully**: Implementasikan error handling yang proper
+4. **Test Views Thoroughly**: Unit test fungsi view
 
-### Common Patterns
+### Pola Umum
 1. **CRUD Operations**: Create, Read, Update, Delete views
-2. **Form Handling**: GET for display, POST for processing
-3. **API Endpoints**: JSON responses for AJAX requests
-4. **Page Views**: Template rendering for full pages
+2. **Form Handling**: GET untuk display, POST untuk processing
+3. **API Endpoints**: JSON responses untuk AJAX requests
+4. **Page Views**: Template rendering untuk full pages
 
-## Conclusion
-Views are the heart of Pyramid applications, providing the interface between HTTP requests and application logic. Understanding view configuration, routing, and response rendering is essential for building robust web applications with Pyramid.
+## Kesimpulan
+Views adalah jantung dari aplikasi Pyramid, menyediakan interface antara HTTP requests dan application logic. Memahami konfigurasi view, routing, dan response rendering sangat penting untuk membangun aplikasi web yang robust dengan Pyramid.

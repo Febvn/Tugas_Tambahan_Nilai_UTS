@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash Messages Demo - Session Management</title>
+    <link rel="stylesheet" href="{{ request.static_url('tutorial:static/app.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Flash Messages Demo</h1>
+
+        <p>This page demonstrates different types of flash messages that are stored in the session.</p>
+
+        <!-- Display Messages -->
+        <div class="messages-section">
+            <h2>Messages from this Request:</h2>
+            {% if messages %}
+                {% for message in messages %}
+                <div class="flash-message flash-{{ message.category or 'info' }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No messages to display.</p>
+            {% endif %}
+        </div>
+
+        <!-- Flash Queue Information -->
+        <div class="queue-info">
+            <h2>Flash Queue Information:</h2>
+            <div class="info-grid">
+                {% for queue_name, queue_messages in flash_queues.items() %}
+                <div class="info-item">
+                    <strong>Queue "{{ queue_name }}":</strong>
+                    <ul>
+                        {% for msg in queue_messages %}
+                        <li>{{ msg }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="actions">
+            <a href="{{ request.route_url('flash_demo') }}" class="btn btn-primary">Refresh Demo</a>
+            <a href="{{ request.route_url('home') }}" class="btn btn-secondary">Back to Home</a>
+        </div>
+
+        <!-- Explanation -->
+        <div class="explanation">
+            <h3>How Flash Messages Work:</h3>
+            <ul>
+                <li>Flash messages are stored in the session</li>
+                <li>They persist across requests until retrieved</li>
+                <li>Different categories can be used for styling</li>
+                <li>Messages are automatically cleared after being displayed</li>
+                <li>Multiple queues can be used for different types of messages</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="{{ request.static_url('tutorial:static/app.js') }}"></script>
+</body>
+</html>
