@@ -20,9 +20,9 @@
 - [x] Implement 11_Dispatching_URLs_To_Views_With_Routing
 - [x] Implement 12_Templating_With_jinja2
 - [x] Implement 13_CSS_JS_Images_Files_With_Static_Assets
+- [x] Implement 14_AJAX_Development_With_JSON_Renderers
 
 ## Pending
-- [ ] Implement 14_AJAX_Development_With_JSON_Renderers
 - [ ] Implement 15_More_With_View_Classes
 - [ ] Implement 16_Collecting_Application_Info_With_Logging
 - [ ] Implement 17_Transient_Data_Using_Sessions
