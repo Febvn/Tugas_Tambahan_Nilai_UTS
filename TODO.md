@@ -12,9 +12,9 @@
 - [x] Implement 03_Application_Configuration_with_.ini_Files
 - [x] Implement 04_Easier_Development_with_debugtoolbar
 - [x] Implement 05_Unit_Tests_and_pytest
+- [x] Implement 06_Functional_Testing_with_WebTest
 
 ## Pending
-- [ ] Implement 06_Functional_Testing_with_WebTest
 - [ ] Implement 07_Basic_Web_Handling_With_Views
 - [ ] Implement 08_HTML_Generation_With_Templating
 - [ ] Implement 09_Organizing_Views_With_View_Classes
