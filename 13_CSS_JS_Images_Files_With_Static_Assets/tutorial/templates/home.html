@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ project }}</title>
+    <link rel="stylesheet" href="{{ request.static_url('tutorial:static/app.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ project }}</h1>
+            <img src="{{ request.static_url('tutorial:static/logo.png') }}" alt="Logo" class="logo">
+        </header>
+
+        <main>
+            <h2>Static Assets Demo</h2>
+            <p>This page demonstrates serving static assets (CSS, JavaScript, images) in Pyramid.</p>
+
+            <div class="features">
+                <div class="feature">
+                    <h3>CSS Styling</h3>
+                    <p>External CSS files are served from the static directory.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>JavaScript</h3>
+                    <p>Client-side scripts enhance user interaction.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Images</h3>
+                    <p>Images and other media files are efficiently served.</p>
+                </div>
+            </div>
+
+            <button id="demo-button" class="btn">Click for Demo</button>
+            <div id="demo-output"></div>
+        </main>
+    </div>
+
+    <script src="{{ request.static_url('tutorial:static/app.js') }}"></script>
+</body>
+</html>
