@@ -1,28 +1,36 @@
-# Tutorial 17: Transient Data Using Sessions
 
-## Overview
 
-This tutorial demonstrates how to use sessions in Pyramid web applications to store transient data that persists across multiple requests from the same user. Sessions are essential for maintaining user state, implementing login systems, shopping carts, and other features that require data persistence between page visits.
+# Tutorial 17: Data Sementara Menggunakan Session
 
-## Key Concepts
+## Gambaran Umum
 
-### What are Sessions?
+Tutorial ini menjelaskan cara menggunakan **session** di aplikasi web Pyramid untuk menyimpan **data sementara** yang tetap ada di antara beberapa permintaan (request) dari pengguna yang sama.
+Session sangat penting untuk mempertahankan status pengguna, membuat sistem login, keranjang belanja, dan fitur lain yang memerlukan penyimpanan data antar kunjungan halaman.
 
-Sessions provide a way to store data that persists across multiple HTTP requests from the same client. Unlike cookies, session data is stored on the server side, making it more secure for sensitive information.
+---
 
-### Session Types in Pyramid
+## Konsep Utama
 
-1. **Signed Cookie Sessions**: Data is stored in a signed cookie on the client side
-2. **Server-side Sessions**: Data is stored on the server (requires additional configuration)
-3. **Database Sessions**: Data is stored in a database
+### Apa itu Session?
 
-This tutorial uses Signed Cookie Sessions, which are the default and most commonly used type.
+Session menyediakan cara untuk menyimpan data yang bertahan di antara beberapa permintaan HTTP dari klien yang sama.
+Berbeda dengan cookie, data session disimpan di sisi server sehingga **lebih aman** untuk informasi sensitif.
 
-## Implementation Details
+### Jenis-jenis Session di Pyramid
 
-### Application Configuration
+1. **Signed Cookie Sessions** – Data disimpan di cookie yang ditandatangani pada sisi klien.
+2. **Server-side Sessions** – Data disimpan di server (perlu konfigurasi tambahan).
+3. **Database Sessions** – Data disimpan di database.
 
-The session factory is configured in `tutorial/__init__.py`:
+Tutorial ini menggunakan **Signed Cookie Session**, karena jenis ini paling umum dan menjadi default di Pyramid.
+
+---
+
+## Detail Implementasi
+
+### Konfigurasi Aplikasi
+
+Session factory diatur dalam file `tutorial/__init__.py`:
 
 ```python
 from pyramid.session import SignedCookieSessionFactory
@@ -32,159 +40,197 @@ def main(global_config, **settings):
     config = Configurator(settings=settings, session_factory=my_session_factory)
 ```
 
-### Session Operations
+---
 
-#### Storing Data
+### Operasi pada Session
+
+#### Menyimpan Data
+
 ```python
 session = request.session
 session['username'] = 'john_doe'
 session['login_time'] = str(request.datetime)
 ```
 
-#### Retrieving Data
+#### Mengambil Data
+
 ```python
 username = session.get('username')
 counter = session.get('counter', 0)
 ```
 
-#### Checking for Keys
+#### Mengecek Kunci
+
 ```python
 if 'username' in session:
-    # User is logged in
+    # User sudah login
 ```
 
-#### Removing Data
+#### Menghapus Data
+
 ```python
 del session['username']
 ```
 
-#### Clearing Entire Session
+#### Menghapus Seluruh Session
+
 ```python
 session.invalidate()
 ```
 
+---
+
 ### Flash Messages
 
-Flash messages are temporary messages stored in the session that are displayed once and then automatically removed:
+Flash message adalah pesan sementara yang disimpan dalam session, akan ditampilkan sekali, lalu otomatis dihapus:
 
 ```python
-request.session.flash('Welcome!', 'success')
-request.session.flash('Error occurred', 'error')
+request.session.flash('Selamat datang!', 'success')
+request.session.flash('Terjadi kesalahan', 'error')
 
-# In template
+# Di template
 {% for message in request.session.pop_flash() %}
 <div class="flash-{{ message.category }}">{{ message }}</div>
 {% endfor %}
 ```
 
-## Features Implemented
+---
 
-### 1. User Authentication
-- Login form with username input
-- Session-based authentication
-- Login/logout functionality
-- Welcome messages using flash messages
+## Fitur yang Diterapkan
 
-### 2. Session Data Persistence
-- Username storage across requests
-- Login timestamp tracking
-- Counter that increments with each request
+### 1. Autentikasi Pengguna
 
-### 3. Flash Messages System
-- Multiple message categories (info, success, warning, error)
-- Automatic message cleanup after display
-- Styled message display
+* Form login dengan input username
+* Autentikasi berbasis session
+* Fitur login/logout
+* Pesan sambutan menggunakan flash message
+
+### 2. Persistensi Data Session
+
+* Menyimpan username di antara permintaan
+* Mencatat waktu login
+* Counter yang meningkat setiap kali halaman dimuat
+
+### 3. Sistem Flash Message
+
+* Beberapa kategori pesan (info, success, warning, error)
+* Pesan otomatis dihapus setelah ditampilkan
+* Tampilan pesan yang rapi
 
 ### 4. AJAX Counter
-- Client-side counter increment using JavaScript fetch API
-- Server-side counter storage in session
-- Real-time UI updates
 
-### 5. Session Information Display
-- Current session data visualization
-- Session keys listing
-- Session ID display (when available)
+* Counter di sisi klien menggunakan `fetch API`
+* Nilai counter disimpan di session server
+* Pembaruan UI secara real-time
 
-## Security Considerations
+### 5. Tampilan Informasi Session
 
-### Session Security
-- Sessions use signed cookies to prevent tampering
-- Secret key should be strong and unique per application
-- Session data is encrypted but visible to users (don't store sensitive data)
+* Menampilkan data session saat ini
+* Daftar kunci (keys) dalam session
+* Menampilkan ID session (jika tersedia)
 
-### Best Practices
-- Use HTTPS in production to protect session cookies
-- Implement session timeout for security
-- Validate session data on each request
-- Use appropriate session storage for production (database sessions)
+---
 
-## Template Features
+## Pertimbangan Keamanan
 
-### Jinja2 Templates
-- Dynamic content rendering based on session state
-- Conditional display of login/logout buttons
-- Flash message rendering
-- Session data visualization
+### Keamanan Session
 
-### Static Assets
-- CSS styling for session management interface
-- JavaScript for interactive features
-- Responsive design for mobile compatibility
+* Session menggunakan cookie yang ditandatangani untuk mencegah manipulasi
+* Kunci rahasia harus **kuat dan unik** untuk setiap aplikasi
+* Data dalam cookie terenkripsi tapi tetap dapat dilihat pengguna (jangan simpan data sensitif)
 
-## Routes and Views
+### Praktik Terbaik
+
+* Gunakan **HTTPS** di produksi agar cookie aman
+* Terapkan **session timeout**
+* Validasi data session di setiap request
+* Gunakan **server-side session** untuk aplikasi produksi yang besar
+
+---
+
+## Fitur Template
+
+### Template Jinja2
+
+* Konten dinamis tergantung status session
+* Tampilkan tombol login/logout secara kondisional
+* Render flash message
+* Visualisasi data session
+
+### Aset Statis
+
+* CSS untuk tampilan manajemen session
+* JavaScript untuk fitur interaktif
+* Desain responsif untuk tampilan mobile
+
+---
+
+## Routes dan Views
 
 ### Routes
-- `/` (home): Main page with session information
-- `/login`: Login form (GET) and processing (POST)
-- `/logout`: Logout functionality
-- `/counter`: AJAX endpoint for counter increment
-- `/flash`: Flash messages demonstration
+
+* `/` — Halaman utama dengan info session
+* `/login` — Form login (GET) dan proses login (POST)
+* `/logout` — Fungsi logout
+* `/counter` — Endpoint AJAX untuk counter
+* `/flash` — Demo flash message
 
 ### View Functions
-- `home()`: Displays current session state
-- `login_form()`: Shows login form
-- `login_submit()`: Processes login form
-- `logout()`: Clears session and redirects
-- `counter()`: Increments and returns counter value
-- `flash_demo()`: Demonstrates flash messages
 
-## Testing the Application
+* `home()` — Menampilkan status session saat ini
+* `login_form()` — Menampilkan form login
+* `login_submit()` — Memproses login
+* `logout()` — Menghapus session dan redirect
+* `counter()` — Menambah nilai counter dan mengembalikan nilainya
+* `flash_demo()` — Menampilkan demo flash message
 
-1. **Start the application**:
+---
+
+## Pengujian Aplikasi
+
+1. **Jalankan aplikasi**
+
    ```bash
    cd 17_Transient_Data_Using_Sessions
    pserve development.ini
    ```
 
-2. **Test login functionality**:
-   - Visit http://localhost:6543/
-   - Click "Login" and enter a username
-   - Verify session data is displayed
+2. **Uji fitur login**
 
-3. **Test counter**:
-   - Click "Increment Counter" button
-   - Observe counter value updates
+   * Kunjungi `http://localhost:6543/`
+   * Klik “Login” dan masukkan username
+   * Pastikan data session tampil di halaman
 
-4. **Test flash messages**:
-   - Visit the flash demo page
-   - Refresh to see different message types
+3. **Uji counter**
 
-5. **Test logout**:
-   - Click "Logout" to clear session
-   - Verify session data is removed
+   * Klik tombol “Increment Counter”
+   * Lihat nilai counter berubah
 
-## Advanced Session Features
+4. **Uji flash message**
 
-### Session Timeouts
+   * Buka halaman flash demo
+   * Refresh untuk melihat berbagai jenis pesan
+
+5. **Uji logout**
+
+   * Klik “Logout”
+   * Pastikan session terhapus
+
+---
+
+## Fitur Session Lanjutan
+
+### Waktu Kedaluwarsa Session
+
 ```python
-# Configure session timeout (in seconds)
 my_session_factory = SignedCookieSessionFactory(
     'itsaseekreet',
-    timeout=3600  # 1 hour
+    timeout=3600  # 1 jam
 )
 ```
 
-### Custom Session Serialization
+### Serialisasi Session Kustom
+
 ```python
 import json
 
@@ -193,44 +239,55 @@ class CustomSession(dict):
         self.request = request
         super().__init__()
 
-# Use custom session class
 my_session_factory = SignedCookieSessionFactory(
     'itsaseekreet',
     cookie_name='myapp_session',
     max_age=3600,
-    secure=True,  # HTTPS only
-    httponly=True  # Prevent JavaScript access
+    secure=True,   # hanya lewat HTTPS
+    httponly=True  # tidak bisa diakses lewat JavaScript
 )
 ```
 
-### Server-side Sessions
-For applications requiring more security or larger session data:
+### Server-side Session
+
+Untuk aplikasi yang butuh keamanan lebih atau data session yang besar:
 
 ```python
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
 
-# Server-side session configuration would require additional setup
-# with a database or Redis backend
+# Konfigurasi server-side session butuh setup tambahan
+# misalnya dengan database atau Redis
 ```
 
-## Common Use Cases
+---
 
-1. **User Authentication**: Store user ID and login status
-2. **Shopping Carts**: Maintain cart contents across pages
-3. **Form Data**: Preserve form state during multi-step processes
-4. **User Preferences**: Remember user settings and customizations
-5. **Flash Messages**: Display one-time notifications
-6. **CSRF Protection**: Store tokens for form validation
+## Contoh Penggunaan Umum
 
-## Performance Considerations
+1. **Autentikasi Pengguna** – Menyimpan ID pengguna dan status login
+2. **Keranjang Belanja** – Menyimpan isi keranjang antar halaman
+3. **Data Form** – Menyimpan data form di proses bertahap
+4. **Preferensi Pengguna** – Menyimpan pengaturan pengguna
+5. **Flash Message** – Menampilkan notifikasi sekali tampil
+6. **Perlindungan CSRF** – Menyimpan token validasi form
 
-- Signed cookie sessions store data client-side, reducing server load
-- Session data is included in every request/response
-- Large session data can impact performance
-- Consider server-side sessions for high-traffic applications
+---
 
-## Conclusion
+## Pertimbangan Performa
 
-Sessions are fundamental to modern web applications, enabling stateful interactions in a stateless HTTP environment. This tutorial demonstrates the core concepts and practical implementation of session management in Pyramid, providing a foundation for building interactive web applications with user state persistence.
+* Signed cookie session menyimpan data di klien → **beban server lebih ringan**
+* Namun, data session dikirim setiap request/response
+* Data session yang besar bisa memperlambat aplikasi
+* Gunakan server-side session untuk aplikasi besar
 
-The implementation showcases both basic session operations and advanced features like flash messages, making it suitable for real-world applications requiring user session management.
+---
+
+## Kesimpulan
+
+Session adalah bagian penting dari aplikasi web modern, memungkinkan interaksi **stateful** di atas protokol HTTP yang **stateless**.
+Tutorial ini menjelaskan konsep dasar dan implementasi praktis session di Pyramid, termasuk operasi dasar dan fitur lanjutan seperti flash message.
+
+Dengan memahami cara kerja session, kamu bisa membangun aplikasi web interaktif yang mempertahankan status pengguna secara aman dan efisien.
+
+---
+
+Apakah kamu ingin saya lanjut bantu terjemahkan **Tutorial 18 (Form Handling)** juga biar satu set lengkap sebelum masuk ke SQLAlchemy?
