@@ -1,28 +1,38 @@
-# Tutorial 19: Databases Using SQLAlchemy
+# Tutorial 19: Database Menggunakan SQLAlchemy
 
-## Overview
-This tutorial demonstrates how to integrate SQLAlchemy, a powerful Object-Relational Mapping (ORM) library, with Pyramid applications. It covers database setup, model definition, session management, and CRUD operations, providing a foundation for building data-driven web applications.
+## Gambaran Umum
 
-## Key Concepts
+Tutorial ini menjelaskan cara mengintegrasikan **SQLAlchemy**, sebuah pustaka **Object-Relational Mapping (ORM)** yang kuat, ke dalam aplikasi **Pyramid**. Materi mencakup **setup database**, **definisi model**, **manajemen sesi (session)**, dan **operasi CRUD**, memberikan dasar yang kuat untuk membangun aplikasi web berbasis data.
+
+---
+
+## Konsep Utama
 
 ### SQLAlchemy ORM
-Understanding Object-Relational Mapping and how it simplifies database interactions.
 
-### Database Models
-Defining Python classes that map to database tables.
+Memahami **Object-Relational Mapping (ORM)** dan bagaimana cara kerjanya menyederhanakan interaksi dengan database.
 
-### Session Management
-Managing database connections and transactions.
+### Model Database
 
-### CRUD Operations
-Implementing Create, Read, Update, and Delete operations.
+Mendefinisikan **kelas Python** yang dipetakan ke tabel-tabel dalam database.
 
-### Database Initialization
-Setting up and populating the database schema.
+### Manajemen Sesi
 
-## Implementation Details
+Mengatur koneksi dan transaksi antara aplikasi dan database.
 
-### SQLAlchemy Model Definition
+### Operasi CRUD
+
+Mengimplementasikan operasi **Create, Read, Update, Delete** pada data.
+
+### Inisialisasi Database
+
+Membuat dan mengisi **skema database** untuk pertama kali.
+
+---
+
+## Detail Implementasi
+
+### Definisi Model SQLAlchemy
 
 ```python
 from sqlalchemy import (
@@ -56,9 +66,11 @@ class User(Base):
     email = Column(Text, unique=True)
 ```
 
-The models define the database schema using SQLAlchemy's declarative syntax. Relationships between tables are established using `relationship()` and `ForeignKey`.
+Model di atas mendefinisikan **struktur tabel database** menggunakan sintaks deklaratif SQLAlchemy. Hubungan antar tabel ditentukan dengan fungsi `relationship()` dan `ForeignKey`.
 
-### Database Session Configuration
+---
+
+### Konfigurasi Sesi Database
 
 ```python
 from zope.sqlalchemy import ZopeTransactionExtension
@@ -66,9 +78,11 @@ from zope.sqlalchemy import ZopeTransactionExtension
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 ```
 
-The `ZopeTransactionExtension` integrates SQLAlchemy sessions with Pyramid's transaction management, ensuring proper commit/rollback behavior.
+`ZopeTransactionExtension` mengintegrasikan sesi SQLAlchemy dengan **manajemen transaksi Pyramid**, sehingga proses **commit** dan **rollback** dilakukan secara otomatis dan aman.
 
-### Database Initialization Script
+---
+
+### Skrip Inisialisasi Database
 
 ```python
 def main(argv=sys.argv):
@@ -81,9 +95,11 @@ def main(argv=sys.argv):
     Base.metadata.create_all(engine)
 ```
 
-The initialization script creates all tables defined in the models and populates them with initial data.
+Skrip inisialisasi ini membuat semua tabel yang didefinisikan di dalam model dan dapat digunakan untuk mengisi data awal ke dalam database.
 
-### View Functions with Database Operations
+---
+
+### Fungsi View dengan Operasi Database
 
 ```python
 @view_config(route_name='page', renderer='templates/page.html')
@@ -106,47 +122,60 @@ def add_page_view(request):
         return HTTPFound(location=request.route_url('page', pagename=pagename))
 ```
 
-Views perform database queries and modifications using the configured session.
+Fungsi view ini melakukan **query dan modifikasi data** menggunakan sesi database yang sudah dikonfigurasi.
 
-## Analysis
+---
 
-### Benefits of SQLAlchemy Integration
+## Analisis
 
-- **Abstraction**: Database operations are performed using Python objects
-- **Portability**: Code works with multiple database backends
-- **Productivity**: Reduces boilerplate SQL code
-- **Maintainability**: Changes to database schema are reflected in code
-- **Performance**: Efficient query generation and execution
+### Keuntungan Integrasi SQLAlchemy
 
-### Database Session Management
+* **Abstraksi**: Operasi database dilakukan melalui objek Python, bukan SQL mentah.
+* **Portabilitas**: Kode dapat bekerja di berbagai jenis database tanpa perubahan besar.
+* **Produktivitas**: Mengurangi kode SQL berulang.
+* **Kemudahan Pemeliharaan**: Perubahan struktur database tercermin dalam kode model.
+* **Performa**: Query dijalankan secara efisien oleh SQLAlchemy.
 
-- **Scoped Sessions**: Thread-local sessions prevent concurrency issues
-- **Transaction Integration**: Automatic commit/rollback with Pyramid transactions
-- **Connection Pooling**: Efficient reuse of database connections
-- **Lazy Loading**: Related objects loaded on-demand
+---
 
-### Security Considerations
+### Manajemen Sesi Database
 
-- **Input Validation**: All user input must be validated before database operations
-- **SQL Injection Prevention**: SQLAlchemy automatically escapes parameters
-- **Permission Checks**: Database operations should respect authorization rules
-- **Data Sanitization**: User data should be sanitized before storage
+* **Scoped Sessions**: Setiap thread memiliki sesi sendiri untuk menghindari konflik data.
+* **Integrasi Transaksi**: Commit dan rollback dilakukan otomatis bersama transaksi Pyramid.
+* **Connection Pooling**: Koneksi database digunakan kembali untuk efisiensi.
+* **Lazy Loading**: Data relasi hanya diambil saat dibutuhkan.
 
-### Performance Optimization
+---
 
-- **Query Optimization**: Use `selectinload` or `joinedload` for relationships
-- **Indexing**: Add database indexes for frequently queried columns
-- **Caching**: Implement caching layers for frequently accessed data
-- **Pagination**: Limit result sets for large datasets
+### Pertimbangan Keamanan
 
-### Best Practices
+* **Validasi Input**: Semua data dari pengguna harus divalidasi sebelum disimpan.
+* **Perlindungan SQL Injection**: SQLAlchemy secara otomatis men-escape parameter.
+* **Pemeriksaan Izin (Permission Check)**: Operasi database harus mematuhi aturan otorisasi.
+* **Sanitasi Data**: Data pengguna perlu disaring sebelum disimpan.
 
-- **Model Separation**: Keep business logic separate from models
-- **Migration Scripts**: Use Alembic for database schema changes
-- **Testing**: Use in-memory databases for unit tests
-- **Connection Configuration**: Store database URLs in configuration files
-- **Error Handling**: Implement proper exception handling for database errors
+---
 
-## Conclusion
+### Optimasi Performa
 
-SQLAlchemy provides a powerful and flexible way to work with databases in Pyramid applications. By abstracting database operations into Python objects, it simplifies development and improves maintainability. Understanding SQLAlchemy's patterns and best practices enables the creation of robust, scalable data-driven applications. Proper session management and transaction handling ensure data integrity and application reliability.
+* **Optimasi Query**: Gunakan `selectinload` atau `joinedload` untuk memuat relasi dengan efisien.
+* **Indexing**: Tambahkan indeks pada kolom yang sering digunakan untuk pencarian.
+* **Caching**: Terapkan sistem cache untuk data yang sering diakses.
+* **Pagination**: Batasi hasil query untuk dataset besar.
+
+---
+
+### Praktik Terbaik
+
+* **Pemisahan Model dan Logika Bisnis**: Jangan campur logika aplikasi dalam model.
+* **Migrasi Database**: Gunakan **Alembic** untuk menangani perubahan struktur database.
+* **Pengujian**: Gunakan database in-memory untuk unit testing.
+* **Konfigurasi Koneksi**: Simpan URL database di file konfigurasi, bukan di kode.
+* **Penanganan Error**: Tangani kesalahan database dengan baik untuk mencegah crash.
+
+---
+
+## Kesimpulan
+
+**SQLAlchemy** memberikan cara yang kuat dan fleksibel untuk bekerja dengan database di dalam aplikasi **Pyramid**. Dengan mengubah operasi database menjadi objek Python, proses pengembangan menjadi lebih mudah dan terstruktur. Pemahaman tentang pola dan praktik terbaik SQLAlchemy membantu menciptakan aplikasi berbasis data yang **stabil, skalabel, dan mudah dirawat**.
+Manajemen sesi dan transaksi yang tepat memastikan **integritas data** dan **keandalan aplikasi**.
