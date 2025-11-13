@@ -1,28 +1,41 @@
-# Tutorial 15: More With View Classes
 
-## Overview
-This tutorial explores advanced patterns and techniques for using view classes in Pyramid applications. Building on the basic view classes introduced in tutorial 9, this tutorial demonstrates sophisticated view class usage including multiple HTTP methods, different renderers, custom predicates, and RESTful API design.
+---
 
-## Key Concepts
+# **Tutorial 15: Lebih Lanjut dengan View Class**
 
-### Advanced View Class Patterns
-Understanding complex view class configurations and inheritance.
+## **Ikhtisar**
 
-### Multiple HTTP Methods
-Handling different HTTP verbs within a single view class.
+Tutorial ini membahas pola dan teknik lanjutan dalam penggunaan *view class* di aplikasi Pyramid. Melanjutkan dari *view class* dasar yang dijelaskan pada tutorial 9, bagian ini menunjukkan penggunaan tingkat lanjut seperti penanganan banyak metode HTTP, berbagai *renderer*, *custom predicates*, dan desain API yang bersifat RESTful.
 
-### Custom Predicates
-Conditional view matching based on request characteristics.
+---
 
-### RESTful Resource Design
-Implementing CRUD operations with view classes.
+## **Konsep Utama**
 
-### Request Context Management
-Advanced request handling and context passing.
+### **Pola View Class Lanjutan**
 
-## Implementation Details
+Memahami konfigurasi kompleks dan *inheritance* pada *view class*.
 
-### View Class Inheritance and Defaults
+### **Beberapa Metode HTTP**
+
+Menangani berbagai *HTTP verb* dalam satu *view class*.
+
+### **Custom Predicates**
+
+Pencocokan *view* bersyarat berdasarkan karakteristik permintaan (*request*).
+
+### **Desain Resource RESTful**
+
+Menerapkan operasi CRUD menggunakan *view class*.
+
+### **Manajemen Konteks Request**
+
+Penanganan permintaan lanjutan dan pengoperan konteks antar komponen.
+
+---
+
+## **Detail Implementasi**
+
+### **Pewarisan dan Default pada View Class**
 
 ```python
 @view_defaults(route_name='company')
@@ -32,39 +45,45 @@ class CompanyViews:
         self.company_name = request.matchdict.get('name', '').lower()
 ```
 
-The `@view_defaults` decorator allows setting common configuration that applies to all methods in the view class. This reduces code duplication and provides a clean way to share setup logic.
+Dekorator `@view_defaults` memungkinkan pengaturan konfigurasi umum yang berlaku untuk semua metode dalam *view class*. Ini mengurangi duplikasi kode dan memberikan cara yang rapi untuk berbagi logika inisialisasi.
 
-### Multiple HTTP Method Handling
+---
+
+### **Penanganan Banyak Metode HTTP**
 
 ```python
 @view_config(request_method='GET', renderer='templates/company.html')
 def company(self):
-    # GET request handling
+    # Penanganan GET
 
 @view_config(request_method='PUT', renderer='json')
 def update_company(self):
-    # PUT request handling
+    # Penanganan PUT
 
 @view_config(request_method='DELETE', renderer='json')
 def delete_company(self):
-    # DELETE request handling
+    # Penanganan DELETE
 ```
 
-Each method in the view class can be decorated with `@view_config` to handle specific HTTP methods, allowing a single view class to implement full CRUD operations for a resource.
+Setiap metode dalam *view class* bisa diberi dekorator `@view_config` untuk menangani metode HTTP tertentu, memungkinkan satu kelas mengimplementasikan seluruh operasi CRUD untuk satu *resource*.
 
-### Custom Predicates
+---
+
+### **Custom Predicates**
 
 ```python
 @view_config(route_name='home', request_method='GET',
              custom_predicates=[lambda info, request: request.params.get('debug') == 'true'],
              renderer='templates/debug.html')
 def debug_info(self):
-    # Only called when ?debug=true
+    # Hanya dipanggil jika ?debug=true
 ```
 
-Custom predicates allow conditional view matching based on arbitrary request characteristics, enabling sophisticated routing logic.
+*Custom predicate* memungkinkan pencocokan *view* berdasarkan karakteristik permintaan tertentu, membuat logika *routing* menjadi lebih fleksibel.
 
-### JSON API Endpoints
+---
+
+### **Endpoint API JSON**
 
 ```python
 @view_config(route_name='company_json', request_method='GET', renderer='json')
@@ -75,12 +94,15 @@ def company_json(self):
     }
 ```
 
-JSON renderers automatically serialize Python objects to JSON responses, making API development straightforward.
+*Renderer JSON* secara otomatis mengubah objek Python menjadi respons JSON, membuat pengembangan API menjadi lebih sederhana.
 
-## View Class Patterns
+---
 
-### Resource-Based Views
-Organizing views around resources with multiple operations:
+## **Pola View Class**
+
+### **View Berbasis Resource**
+
+Mengorganisir *view* berdasarkan sumber daya yang memiliki beberapa operasi:
 
 ```python
 @view_defaults(route_name='resource')
@@ -102,8 +124,11 @@ class ResourceViews:
     def delete(self): pass
 ```
 
-### Context-Aware Views
-Views that adapt behavior based on request context:
+---
+
+### **View yang Kontekstual**
+
+*View* yang menyesuaikan perilaku berdasarkan konteks *request*:
 
 ```python
 class ContextViews:
@@ -116,8 +141,11 @@ class ContextViews:
         return self.get_data()
 ```
 
-### Hierarchical View Classes
-Using inheritance for common functionality:
+---
+
+### **View Class Bertingkat**
+
+Menggunakan *inheritance* untuk fungsi umum:
 
 ```python
 class BaseViews:
@@ -125,19 +153,20 @@ class BaseViews:
         self.request = request
 
     def check_permissions(self):
-        # Common permission checking
+        # Pemeriksaan izin umum
 
 class AdminViews(BaseViews):
     @view_config(route_name='admin')
     def admin_panel(self):
         self.check_permissions()
-        # Admin-specific logic
+        # Logika khusus admin
 ```
 
-## HTTP Method Handling
+---
 
-### GET Requests
-Used for retrieving data:
+## **Penanganan Metode HTTP**
+
+### **GET (Mengambil Data)**
 
 ```python
 @view_config(request_method='GET')
@@ -146,8 +175,7 @@ def retrieve_data(self):
     return {'data': data}
 ```
 
-### POST Requests
-Used for creating new resources:
+### **POST (Membuat Data Baru)**
 
 ```python
 @view_config(request_method='POST', renderer='json')
@@ -157,8 +185,7 @@ def create_resource(self):
     return {'id': new_resource.id, 'status': 'created'}
 ```
 
-### PUT Requests
-Used for updating existing resources:
+### **PUT (Memperbarui Data)**
 
 ```python
 @view_config(request_method='PUT', renderer='json')
@@ -169,8 +196,7 @@ def update_resource(self):
     return {'status': 'updated', 'resource': updated}
 ```
 
-### DELETE Requests
-Used for removing resources:
+### **DELETE (Menghapus Data)**
 
 ```python
 @view_config(request_method='DELETE', renderer='json')
@@ -180,9 +206,11 @@ def delete_resource(self):
     return {'status': 'deleted'}
 ```
 
-## Custom Predicates
+---
 
-### Query Parameter Predicates
+## **Custom Predicates**
+
+### **Berdasarkan Query Parameter**
 
 ```python
 def debug_mode_predicate(info, request):
@@ -192,7 +220,7 @@ def debug_mode_predicate(info, request):
 def debug_view(self): pass
 ```
 
-### Header-Based Predicates
+### **Berdasarkan Header**
 
 ```python
 def api_version_predicate(info, request):
@@ -203,7 +231,7 @@ def api_version_predicate(info, request):
 def v2_api_view(self): pass
 ```
 
-### User Agent Predicates
+### **Berdasarkan User Agent**
 
 ```python
 def mobile_predicate(info, request):
@@ -214,9 +242,11 @@ def mobile_predicate(info, request):
 def mobile_view(self): pass
 ```
 
-## Error Handling
+---
 
-### HTTP Status Codes
+## **Penanganan Error**
+
+### **Kode Status HTTP**
 
 ```python
 @view_config(request_method='GET')
@@ -228,7 +258,7 @@ def get_resource(self):
     return {'resource': resource}
 ```
 
-### JSON Error Responses
+### **Respons JSON Error**
 
 ```python
 @view_config(request_method='POST', renderer='json')
@@ -243,45 +273,49 @@ def create_resource(self):
         return {'error': 'internal_error', 'message': str(e)}
 ```
 
-## Request Processing
+---
 
-### JSON Body Parsing
+## **Pemrosesan Request**
+
+### **Parsing JSON**
 
 ```python
 @view_config(request_method='POST', renderer='json')
 def process_json(self):
     try:
         data = self.request.json_body
-        # Process data
+        # Proses data
         return {'result': 'processed'}
     except ValueError:
         return {'error': 'Invalid JSON'}
 ```
 
-### Form Data Handling
+### **Menangani Form Data**
 
 ```python
 @view_config(request_method='POST')
 def process_form(self):
     data = dict(self.request.POST)
-    # Process form data
+    # Proses form
     return {'received': data}
 ```
 
-### File Upload Handling
+### **Upload File**
 
 ```python
 @view_config(request_method='POST')
 def upload_file(self):
     file = self.request.POST['file']
-    # Process uploaded file
+    # Proses file upload
     filename = self.save_file(file)
     return {'filename': filename, 'status': 'uploaded'}
 ```
 
-## Advanced Configuration
+---
 
-### View Configuration Inheritance
+## **Konfigurasi Lanjutan**
+
+### **Pewarisan Konfigurasi View**
 
 ```python
 @view_defaults(renderer='json', permission='view')
@@ -292,11 +326,11 @@ class UserAPIViews(APIViews):
     @view_config(route_name='users')
     def users(self): pass
 
-    @view_config(route_name='user', permission='edit')  # Override permission
+    @view_config(route_name='user', permission='edit')  # Ganti izin
     def user(self): pass
 ```
 
-### Context Factories
+### **Context Factory**
 
 ```python
 def user_context_factory(request):
@@ -308,13 +342,15 @@ def user_context_factory(request):
 
 @view_config(route_name='user', context=user_context_factory)
 def user_view(request):
-    user = request.context  # User object
+    user = request.context  # Objek user
     return {'user': user}
 ```
 
-## Testing View Classes
+---
 
-### Unit Testing
+## **Pengujian View Class**
+
+### **Unit Test**
 
 ```python
 def test_company_view():
@@ -325,7 +361,7 @@ def test_company_view():
     assert 'company' in response
 ```
 
-### Integration Testing
+### **Integration Test**
 
 ```python
 def test_company_api(app):
@@ -335,7 +371,7 @@ def test_company_api(app):
     assert 'company' in data
 ```
 
-### Functional Testing
+### **Functional Test**
 
 ```python
 def test_company_crud(app):
@@ -356,13 +392,12 @@ def test_company_crud(app):
     assert response.status_code == 204
 ```
 
-## Performance Considerations
+---
 
-### View Class Instantiation
-View classes are instantiated per request, so keep `__init__` methods lightweight.
+## **Pertimbangan Performa**
 
-### Caching Strategies
-Use appropriate caching for expensive operations:
+* **Inisialisasi View Class**: Setiap permintaan membuat instance baru, jadi `__init__` harus ringan.
+* **Caching**: Gunakan cache untuk operasi berat.
 
 ```python
 @view_config(request_method='GET')
@@ -374,12 +409,13 @@ def cached_view(self):
     return get_company_data(self.company_id)
 ```
 
-### Database Optimization
-Use efficient queries and consider pagination for large datasets.
+* **Optimasi Database**: Gunakan query efisien dan pagination untuk data besar.
 
-## Security Considerations
+---
 
-### Input Validation
+## **Keamanan**
+
+### **Validasi Input**
 
 ```python
 @view_config(request_method='POST', renderer='json')
@@ -393,29 +429,30 @@ def create_user(self):
         return {'error': 'validation_failed', 'details': e.messages}
 ```
 
-### Permission Checking
+### **Pemeriksaan Izin**
 
 ```python
 @view_config(request_method='DELETE', permission='delete')
 def delete_resource(self):
-    # Permission automatically checked by Pyramid
+    # Pyramid otomatis cek izin
     self.delete_resource()
     return {'status': 'deleted'}
 ```
 
-### CSRF Protection
+### **Perlindungan CSRF**
 
 ```python
 @view_config(request_method='POST', require_csrf=True)
 def update_resource(self):
-    # CSRF token automatically validated
     data = self.request.json_body
     return self.update_resource(data)
 ```
 
-## Real-World Patterns
+---
 
-### API Versioning
+## **Pola Dunia Nyata**
+
+### **Versi API**
 
 ```python
 @view_defaults(route_name='api')
@@ -427,7 +464,7 @@ class APIv2Views:
     api_version = '2.0'
 ```
 
-### Content Negotiation
+### **Negosiasi Konten**
 
 ```python
 class ContentViews:
@@ -438,7 +475,7 @@ class ContentViews:
     def html_view(self): pass
 ```
 
-### Pagination Support
+### **Pagination**
 
 ```python
 @view_config(request_method='GET', renderer='json')
@@ -459,36 +496,44 @@ def list_resources(self):
     }
 ```
 
-## Analysis
+---
 
-### Benefits of Advanced View Classes
+## **Analisis**
 
-- **Code Organization**: Logical grouping of related functionality
-- **DRY Principle**: Reduced code duplication through inheritance
-- **Flexibility**: Multiple renderers and HTTP methods per resource
-- **Maintainability**: Easier to modify and extend functionality
-- **Testability**: Isolated testing of individual methods
+### **Keuntungan View Class Lanjutan**
 
-### Performance Implications
+* **Organisasi kode**: fungsi terkait dikelompokkan dengan rapi
+* **DRY principle**: menghindari duplikasi dengan pewarisan
+* **Fleksibilitas**: dukungan multi-renderer & multi-method
+* **Mudah dirawat**: logika terstruktur
+* **Mudah diuji**: tiap metode bisa diuji terpisah
 
-- **Instantiation Overhead**: View classes created per request
-- **Memory Usage**: Instance variables consume memory
-- **Caching**: Need careful consideration for cached data
+### **Dampak Performa**
 
-### Scalability Factors
+* Setiap *view class* dibuat ulang per request
+* Gunakan cache untuk operasi berat
+* Optimalkan penggunaan memori
 
-- **Database Queries**: Optimize for multiple requests
-- **Caching Layers**: Implement appropriate caching strategies
-- **Load Balancing**: Stateless design for horizontal scaling
+### **Faktor Skalabilitas**
 
-### Best Practices
+* Optimasi query database
+* Gunakan caching layer
+* Desain stateless untuk load balancing
 
-- **Single Responsibility**: Each view class should handle one resource type
-- **Thin Controllers**: Keep business logic in separate services
-- **Consistent APIs**: Follow RESTful conventions
-- **Error Handling**: Comprehensive error responses
-- **Documentation**: Clear API documentation
+### **Best Practice**
 
-## Conclusion
+* Satu *view class* = satu jenis resource
+* Pisahkan logika bisnis ke service lain
+* Gunakan pola REST yang konsisten
+* Tangani error dengan rapi
+* Dokumentasi API yang jelas
 
-Advanced view classes provide powerful patterns for building complex web applications. By leveraging multiple HTTP methods, custom predicates, and sophisticated configuration, developers can create maintainable, scalable, and feature-rich applications. Understanding these patterns enables the creation of professional-grade Pyramid applications with clean, organized code that follows web development best practices.
+---
+
+## **Kesimpulan**
+
+*View class* tingkat lanjut memberikan pola yang kuat untuk membangun aplikasi web yang kompleks. Dengan memanfaatkan banyak metode HTTP, *custom predicates*, dan konfigurasi yang fleksibel, pengembang bisa membuat aplikasi Pyramid yang mudah dikelola, skalabel, dan kaya fitur. Pemahaman konsep ini membantu menciptakan kode profesional yang bersih dan terorganisir sesuai praktik terbaik pengembangan web.
+
+---
+
+
