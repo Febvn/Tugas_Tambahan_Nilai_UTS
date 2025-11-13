@@ -1,35 +1,44 @@
-# Tutorial 18: Forms and Validation with Deform
+# Tutorial 18: Formulir dan Validasi dengan Deform
 
-## Overview
+## Gambaran Umum
 
-This tutorial demonstrates how to create robust web forms using Deform, a Python HTML form generation library built on top of Colander (a data validation and deserialization library). Deform provides a comprehensive solution for form generation, validation, and rendering in Pyramid applications.
+Tutorial ini menjelaskan cara membuat **form web yang kuat dan aman** menggunakan **Deform**, yaitu pustaka Python untuk pembuatan formulir HTML yang dibangun di atas **Colander** (pustaka untuk validasi dan deserialisasi data).
+Deform menyediakan solusi lengkap untuk **pembuatan formulir**, **validasi data**, dan **rendering tampilan** dalam aplikasi Pyramid.
 
-## Key Concepts
+---
 
-### What is Deform?
+## Konsep Utama
 
-Deform is a Python library for generating HTML forms from schemas defined using Colander. It provides:
+### Apa itu Deform?
 
-- **Schema-based form generation**: Forms are defined using Python schemas
-- **Automatic validation**: Client and server-side validation
-- **Widget system**: Rich set of form widgets (text inputs, checkboxes, selects, etc.)
-- **Bootstrap integration**: Built-in Bootstrap CSS framework support
-- **Extensible architecture**: Custom widgets and validators
+**Deform** adalah pustaka Python untuk menghasilkan formulir HTML dari skema yang didefinisikan menggunakan **Colander**.
+Fitur utamanya:
 
-### Colander Schema System
+* **Pembuatan form berbasis skema** – form dibuat dari definisi Python, bukan HTML manual
+* **Validasi otomatis** – tersedia validasi sisi klien dan sisi server
+* **Sistem widget** – berbagai elemen input seperti teks, checkbox, select, dan lainnya
+* **Integrasi Bootstrap** – mendukung tampilan responsif berbasis CSS Bootstrap
+* **Arsitektur yang mudah diperluas** – bisa menambah widget atau validator kustom
 
-Colander provides data validation and deserialization:
+---
 
-- **Schema nodes**: Define data types and validation rules
-- **Validators**: Built-in and custom validation functions
-- **Serialization/Deserialization**: Convert between Python objects and external representations
-- **Error handling**: Comprehensive error reporting
+### Sistem Skema Colander
 
-## Implementation Details
+**Colander** berfungsi untuk validasi dan deserialisasi data.
+Komponennya meliputi:
 
-### Application Configuration
+* **Schema nodes**: menentukan tipe data dan aturan validasi
+* **Validators**: fungsi bawaan atau kustom untuk memeriksa validitas input
+* **Serialization/Deserialization**: mengubah data antara objek Python dan format eksternal (seperti form input)
+* **Penanganan error**: memberikan laporan kesalahan yang detail dan mudah dipahami
 
-The application includes Deform static resources and configures Jinja2 templating:
+---
+
+## Detail Implementasi
+
+### Konfigurasi Aplikasi
+
+Menambahkan sumber daya statis dan renderer untuk Jinja2:
 
 ```python
 config.add_static_view('deform_static', 'deform:static/')
@@ -37,9 +46,12 @@ config.include('pyramid_jinja2')
 config.add_jinja2_renderer('.html')
 ```
 
-### Schema Definitions
+---
 
-#### Contact Form Schema
+### Definisi Skema
+
+#### Skema Formulir Kontak
+
 ```python
 class Contact(colander.MappingSchema):
     name = colander.SchemaNode(
@@ -63,39 +75,31 @@ class Contact(colander.MappingSchema):
     )
 ```
 
-#### User Registration Schema
+Formulir ini meminta nama, email, dan pesan, dengan validasi panjang teks dan format email.
+
+---
+
+#### Skema Registrasi Pengguna
+
 ```python
 class User(colander.MappingSchema):
-    name = colander.SchemaNode(
-        colander.String(),
-        title="Full Name",
-        validator=colander.Length(min=3, max=100)
-    )
-    age = colander.SchemaNode(
-        colander.Integer(),
-        title="Age",
-        validator=colander.Range(min=13, max=120)
-    )
-    email = colander.SchemaNode(
-        colander.String(),
-        validator=colander.Email()
-    )
-    password = colander.SchemaNode(
-        colander.String(),
-        validator=colander.Length(min=8),
-        widget=deform.widget.PasswordWidget()
-    )
-    confirm_password = colander.SchemaNode(
-        colander.String(),
-        widget=deform.widget.PasswordWidget()
-    )
+    name = colander.SchemaNode(colander.String(), title="Full Name", validator=colander.Length(min=3, max=100))
+    age = colander.SchemaNode(colander.Integer(), title="Age", validator=colander.Range(min=13, max=120))
+    email = colander.SchemaNode(colander.String(), validator=colander.Email())
+    password = colander.SchemaNode(colander.String(), validator=colander.Length(min=8), widget=deform.widget.PasswordWidget())
+    confirm_password = colander.SchemaNode(colander.String(), widget=deform.widget.PasswordWidget())
 
     def validator(self, node, cstruct):
         if cstruct.get('password') != cstruct.get('confirm_password'):
             raise colander.Invalid(node, "Passwords do not match")
 ```
 
-#### Sequence Form Schema
+Formulir ini memiliki validasi tambahan untuk memastikan password dan konfirmasi password cocok.
+
+---
+
+#### Skema Formulir Urutan (Sequence Form)
+
 ```python
 class SequenceItem(colander.MappingSchema):
     name = colander.SchemaNode(colander.String(), title="Name")
@@ -111,9 +115,14 @@ class SequenceForm(colander.MappingSchema):
     )
 ```
 
-### Form Processing
+Formulir ini mendukung daftar dinamis dengan tombol tambah/hapus item.
 
-#### Basic Form Handling
+---
+
+### Pemrosesan Formulir
+
+#### Penanganan Dasar Formulir
+
 ```python
 @view_config(route_name='contact', renderer='templates/contact.html')
 def contact(request):
@@ -124,7 +133,6 @@ def contact(request):
         controls = request.POST.items()
         try:
             appstruct = form.validate(controls)
-            # Process valid form data
             request.session.flash("Thank you for your message!", 'success')
             return HTTPFound(location=request.route_url('home'))
         except deform.ValidationFailure as e:
@@ -133,347 +141,148 @@ def contact(request):
     return {'form': form.render()}
 ```
 
-### Widget Types
+Kode ini memvalidasi input, menampilkan pesan sukses, atau mengembalikan pesan error jika validasi gagal.
 
-#### Text Input Widgets
-- `TextInputWidget`: Basic text input
-- `TextAreaWidget`: Multi-line text input
-- `PasswordWidget`: Password input (masked)
-- `HiddenWidget`: Hidden form field
+---
 
-#### Selection Widgets
-- `SelectWidget`: Dropdown selection
-- `RadioChoiceWidget`: Radio button selection
-- `CheckboxChoiceWidget`: Multiple checkbox selection
-- `CheckboxWidget`: Single checkbox
+## Jenis Widget
 
-#### Sequence Widgets
-- `SequenceWidget`: Dynamic list with add/remove functionality
+* **Input teks**: `TextInputWidget`, `TextAreaWidget`, `PasswordWidget`, `HiddenWidget`
+* **Pilihan (select/radio/checkbox)**: `SelectWidget`, `RadioChoiceWidget`, `CheckboxChoiceWidget`, `CheckboxWidget`
+* **Daftar (sequence)**: `SequenceWidget` dengan fungsi tambah/hapus item
+* **Tanggal/Waktu**: `DateInputWidget`, `DateTimeInputWidget`
 
-#### Date/Time Widgets
-- `DateInputWidget`: Date picker
-- `DateTimeInputWidget`: Date and time picker
+---
 
-### Validation Types
+## Jenis Validasi
 
-#### Built-in Validators
-- `Length(min, max)`: String length validation
-- `Range(min, max)`: Numeric range validation
-- `Email()`: Email format validation
-- `Regex(pattern)`: Regular expression validation
-- `OneOf(choices)`: Value must be in list
-- `NoneOf(choices)`: Value must not be in list
+### Validator Bawaan
 
-#### Custom Validators
+* `Length(min, max)` → panjang string
+* `Range(min, max)` → rentang angka
+* `Email()` → format email
+* `Regex(pattern)` → cocokkan pola regex
+* `OneOf(choices)` / `NoneOf(choices)` → nilai harus (atau tidak boleh) termasuk dalam daftar
+
+### Validator Kustom
+
 ```python
 def custom_validator(node, value):
     if not value.startswith('prefix_'):
         raise colander.Invalid(node, "Value must start with 'prefix_'")
-
-class CustomSchema(colander.MappingSchema):
-    field = colander.SchemaNode(
-        colander.String(),
-        validator=custom_validator
-    )
 ```
 
-### Error Handling
+---
 
-#### Validation Failure
+## Penanganan Error
+
 ```python
 try:
     appstruct = form.validate(controls)
 except deform.ValidationFailure as e:
-    # Form validation failed
     return {'form': e.render()}
 ```
 
-#### Custom Error Messages
-```python
-name = colander.SchemaNode(
-    colander.String(),
-    validator=colander.Length(min=2, max=100),
-    title="Name",
-    description="Enter your full name",
-    missing_msg="Name is required",
-    too_short="Name must be at least ${min} characters",
-    too_long="Name must be at most ${max} characters"
-)
-```
+Pesan error kustom juga bisa ditentukan langsung di `SchemaNode`, misalnya jika input terlalu pendek atau kosong.
 
-## Features Implemented
+---
 
-### 1. Contact Form
-- Basic form with name, email, and message fields
-- Server-side validation
-- Success/error messaging with flash messages
-- Bootstrap-styled form rendering
+## Fitur yang Diterapkan
 
-### 2. User Registration Form
-- Comprehensive registration form
-- Password confirmation validation
-- Multiple input types (text, email, password, select, checkboxes)
-- Age validation with range checking
-- Interest selection with checkboxes
-- Country dropdown
-- Optional biography field
+1. **Formulir Kontak**
 
-### 3. Sequence Form
-- Dynamic form with add/remove functionality
-- Multiple items with name-value pairs
-- Minimum and maximum item limits
-- Individual item validation
+   * Input nama, email, pesan
+   * Validasi sisi server
+   * Pesan sukses dengan flash message
 
-### 4. Form Validation
-- Client-side validation feedback
-- Server-side validation with detailed error messages
-- Custom validation rules (password confirmation)
-- Real-time validation feedback
+2. **Formulir Registrasi Pengguna**
 
-### 5. User Interface
-- Responsive Bootstrap-based design
-- Form field highlighting and focus states
-- Error and success state styling
-- Password strength indicator
-- Loading states during form submission
+   * Validasi password, umur, dan email
+   * Berbagai tipe input (teks, password, select)
+   * Tampilan dengan Bootstrap
 
-## Technical Implementation
+3. **Formulir Urutan (Sequence)**
 
-### View Functions
+   * Tambah/hapus item dinamis
+   * Validasi jumlah minimal/maksimal item
 
-#### Contact Form View
-```python
-@view_config(route_name='contact', renderer='templates/contact.html')
-def contact(request):
-    schema = Contact()
-    form = deform.Form(schema, buttons=('submit',))
+4. **Validasi Lengkap**
 
-    if 'submit' in request.POST:
-        controls = request.POST.items()
-        try:
-            appstruct = form.validate(controls)
-            request.session.flash(
-                f"Thank you {appstruct['name']}! Your message has been sent.",
-                'success'
-            )
-            return HTTPFound(location=request.route_url('home'))
-        except deform.ValidationFailure as e:
-            return {'form': e.render(), 'title': 'Contact Form'}
+   * Validasi sisi klien dan server
+   * Pesan error yang jelas
 
-    return {'form': form.render(), 'title': 'Contact Form'}
-```
+5. **Antarmuka Pengguna (UI)**
 
-#### User Form View
-```python
-@view_config(route_name='user_form', renderer='templates/user_form.html')
-def user_form(request):
-    schema = User()
-    form = deform.Form(schema, buttons=('submit',))
+   * Responsif
+   * Indikator kekuatan password
+   * Tampilan sukses/gagal yang jelas
 
-    if 'submit' in request.POST:
-        controls = request.POST.items()
-        try:
-            appstruct = form.validate(controls)
-            request.session.flash(
-                f"Welcome {appstruct['name']}! Your account has been created.",
-                'success'
-            )
-            return HTTPFound(location=request.route_url('home'))
-        except deform.ValidationFailure as e:
-            return {'form': e.render(), 'title': 'User Registration'}
+---
 
-    return {'form': form.render(), 'title': 'User Registration'}
-```
+## Pertimbangan Keamanan
 
-#### Sequence Form View
-```python
-@view_config(route_name='sequence_form', renderer='templates/sequence_form.html')
-def sequence_form(request):
-    schema = SequenceForm()
-    form = deform.Form(schema, buttons=('submit',))
+* Perlindungan **CSRF** bawaan Pyramid
+* Validasi input dari Colander mencegah **injeksi kode**
+* Field password disembunyikan
+* Data flash disimpan aman di sesi
 
-    if 'submit' in request.POST:
-        controls = request.POST.items()
-        try:
-            appstruct = form.validate(controls)
-            item_count = len(appstruct['items'])
-            request.session.flash(
-                f"Form '{appstruct['title']}' submitted with {item_count} items!",
-                'success'
-            )
-            return HTTPFound(location=request.route_url('home'))
-        except deform.ValidationFailure as e:
-            return {'form': e.render(), 'title': 'Sequence Form'}
+---
 
-    return {'form': form.render(), 'title': 'Sequence Form'}
-```
+## Praktik Terbaik
 
-### Template Integration
+* Gunakan deskripsi field yang jelas
+* Selalu validasi di sisi server
+* Tangani error dengan ramah pengguna
+* Redirect setelah submit berhasil
+* Gunakan placeholder dan pesan bantuan
 
-#### Form Rendering
-```html
-<div class="form-container">
-    {{ form|safe }}
-</div>
-```
+---
 
-#### Flash Messages
-```html
-{% for message in request.session.pop_flash() %}
-<div class="alert alert-{{ 'success' if 'success' in message.category else 'danger' }}">
-    {{ message }}
-</div>
-{% endfor %}
-```
+## Fitur Lanjutan
 
-### JavaScript Enhancements
+* **Widget Kustom**: membuat komponen input baru sesuai kebutuhan
+* **Validator Kustom**: misalnya cek username unik ke database
+* **Pre-population**: isi form dengan data yang sudah ada
+* **Upload File**: mendukung input file menggunakan `FileUploadWidget()`
 
-#### Form Validation
-```javascript
-function validateEmail(input) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isValid = emailRegex.test(input.value);
+---
 
-    if (input.value && !isValid) {
-        showFieldError(input, 'Please enter a valid email address');
-    }
-}
+## Pengujian Aplikasi
 
-function validatePasswordStrength(input) {
-    // Password strength calculation and visual feedback
-}
-```
+1. Jalankan aplikasi:
 
-## Security Considerations
-
-### Form Security
-- CSRF protection through Pyramid's built-in CSRF support
-- Input sanitization through Colander validation
-- Password field masking
-- Secure session handling for flash messages
-
-### Validation Security
-- Server-side validation as primary defense
-- Client-side validation for user experience
-- Input length limits to prevent buffer overflows
-- Email validation to prevent malformed data
-
-## Best Practices
-
-### Schema Design
-- Use descriptive field titles and descriptions
-- Provide helpful error messages
-- Set appropriate validation constraints
-- Use appropriate widget types for data types
-
-### Form Handling
-- Always validate on server side
-- Handle validation failures gracefully
-- Provide clear success/error feedback
-- Use appropriate HTTP redirects after successful submission
-
-### User Experience
-- Provide real-time validation feedback
-- Use appropriate input types (email, number, etc.)
-- Group related fields logically
-- Provide helpful placeholder text and descriptions
-
-## Advanced Features
-
-### Custom Widgets
-```python
-class CustomWidget(deform.widget.Widget):
-    def serialize(self, field, cstruct, **kw):
-        # Custom serialization logic
-        pass
-
-    def deserialize(self, field, pstruct):
-        # Custom deserialization logic
-        pass
-```
-
-### Custom Validators
-```python
-def unique_username_validator(node, value):
-    # Check database for unique username
-    if not is_username_unique(value):
-        raise colander.Invalid(node, "Username already exists")
-
-class RegistrationSchema(colander.MappingSchema):
-    username = colander.SchemaNode(
-        colander.String(),
-        validator=unique_username_validator
-    )
-```
-
-### Form Pre-population
-```python
-# Pre-populate form with existing data
-form = deform.Form(schema, buttons=('submit',))
-appstruct = {'name': 'John Doe', 'email': 'john@example.com'}
-form_rendered = form.render(appstruct)
-```
-
-### File Upload Handling
-```python
-import colander
-import deform.widget
-
-class FileUpload(colander.MappingSchema):
-    file = colander.SchemaNode(
-        deform.FileData(),
-        widget=deform.widget.FileUploadWidget()
-    )
-```
-
-## Testing the Application
-
-1. **Start the application**:
    ```bash
    cd 18_Forms_and_Validation_with_Deform
    pserve development.ini
    ```
+2. Tes tiap form di browser:
 
-2. **Test contact form**:
-   - Visit http://localhost:6543/contact
-   - Try submitting with missing fields
-   - Try invalid email format
-   - Submit valid form
+   * `/contact` → form kontak
+   * `/user` → form registrasi
+   * `/sequence` → form sequence
 
-3. **Test user registration**:
-   - Visit http://localhost:6543/user
-   - Test password confirmation
-   - Try different validation scenarios
-   - Submit complete form
+Uji validasi email, password, dan pesan flash untuk memastikan semuanya berjalan.
 
-4. **Test sequence form**:
-   - Visit http://localhost:6543/sequence
-   - Add and remove items
-   - Test validation on individual items
-   - Submit form with multiple items
+---
 
-5. **Test validation feedback**:
-   - Observe real-time validation
-   - Check error message styling
-   - Verify success states
+## Pertimbangan Performa
 
-## Performance Considerations
+* Form di-render di sisi server
+* Cache file CSS/JS statis
+* Gunakan pagination untuk form besar
+* Hindari terlalu banyak item dalam sequence
 
-- Deform forms are rendered server-side
-- Static assets (CSS/JS) should be cached
-- Large forms may benefit from pagination
-- Sequence widgets can impact performance with many items
+---
 
-## Conclusion
+## Kesimpulan
 
-This tutorial demonstrates comprehensive form handling with Deform and Colander in Pyramid applications. The implementation showcases:
+Tutorial ini menunjukkan cara membuat dan memvalidasi form kompleks menggunakan **Deform** dan **Colander** dalam aplikasi **Pyramid**.
+Fitur-fitur utama yang ditunjukkan:
 
-- Schema-based form definition
-- Comprehensive validation
-- Rich widget ecosystem
-- Professional UI with Bootstrap
-- Client-side enhancements
-- Security best practices
-- User experience optimization
+* Definisi form berbasis skema
+* Validasi lengkap (server & klien)
+* Koleksi widget yang kaya
+* Tampilan profesional dengan Bootstrap
+* Keamanan dan UX yang baik
 
-Deform provides a powerful, flexible system for building complex web forms with robust validation, making it an excellent choice for Pyramid applications requiring sophisticated form handling.
+**Deform** menyediakan sistem form yang kuat, fleksibel, dan mudah diperluas—ideal untuk aplikasi Pyramid yang membutuhkan form dengan validasi canggih dan tampilan modern.
