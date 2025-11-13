@@ -1,55 +1,75 @@
-# Tutorial 16: Collecting Application Info With Logging
 
-## Overview
-This tutorial demonstrates comprehensive logging implementation in Pyramid applications. Building on the view classes from tutorial 15, this tutorial shows how to collect, organize, and utilize application information through structured logging practices. You'll learn to implement logging at multiple levels, track request lifecycles, monitor performance, and handle errors effectively.
 
-## Key Concepts
+# Tutorial 16: Mengumpulkan Informasi Aplikasi Menggunakan Logging
 
-### Application Logging Fundamentals
-Understanding logging levels, formats, and best practices for web applications.
+## Gambaran Umum
 
-### Request Lifecycle Tracking
-Logging throughout the entire request-response cycle.
+Tutorial ini menjelaskan implementasi logging yang komprehensif dalam aplikasi Pyramid.
+Melanjutkan dari *view classes* pada tutorial 15, di sini kamu akan belajar bagaimana cara **mengumpulkan, mengatur, dan memanfaatkan informasi aplikasi** melalui praktik logging yang terstruktur.
+Kamu juga akan mempelajari cara menerapkan logging di berbagai level, melacak siklus hidup request, memantau performa, dan menangani error dengan efektif.
 
-### Performance Monitoring
-Measuring and logging response times and resource usage.
+---
 
-### Error Handling and Debugging
-Comprehensive error logging and debugging information collection.
+## Konsep Utama
 
-### Structured Logging
-Consistent log formats with contextual information.
+### Dasar-dasar Logging Aplikasi
 
-## Implementation Details
+Memahami level, format, dan praktik terbaik logging dalam aplikasi web.
 
-### Logging Configuration
+### Pelacakan Siklus Hidup Request
+
+Logging di seluruh siklus request-response.
+
+### Pemantauan Performa
+
+Mengukur dan mencatat waktu respon serta penggunaan sumber daya.
+
+### Penanganan Error dan Debugging
+
+Pencatatan error yang lengkap serta pengumpulan informasi debugging.
+
+### Logging Terstruktur
+
+Format log yang konsisten dengan informasi kontekstual.
+
+---
+
+## Detail Implementasi
+
+### Konfigurasi Logging
 
 ```python
 import logging
 
-# Configure logging
+# Konfigurasi logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 ```
 
-The logging configuration sets up the basic logging infrastructure with appropriate formatting and levels. This ensures all log messages follow a consistent structure with timestamps, logger names, and severity levels.
+Konfigurasi ini menyiapkan infrastruktur logging dasar dengan format dan level yang seragam.
+Setiap pesan log akan memiliki **timestamp**, nama logger, dan level keparahan (INFO, DEBUG, ERROR, dll).
 
-### Request Logger Integration
+---
+
+### Integrasi Logger ke Request
 
 ```python
 def get_logger(request):
-    """Add a logger to the request object."""
+    """Menambahkan logger ke objek request."""
     return logging.getLogger('tutorial')
 
-# In main function:
+# Di fungsi main:
 config.add_request_method(get_logger, 'logger', reify=True)
 ```
 
-Adding a logger as a request method makes it easily accessible throughout the application. The `reify=True` parameter ensures the logger is created once per request and cached.
+Dengan menambahkan logger sebagai *request method*, kamu bisa mengakses logger dari mana saja dalam aplikasi.
+Parameter `reify=True` memastikan logger hanya dibuat sekali per request.
 
-### View-Level Logging
+---
+
+### Logging di Level View
 
 ```python
 @view_defaults(route_name='home', renderer='templates/home.html')
@@ -60,100 +80,111 @@ class HomeViews:
 
     @view_config(request_method='GET')
     def home(self):
-        self.logger.info(f"Home page accessed from {self.request.remote_addr}")
-        return {'title': 'Logging Tutorial', 'companies': list(COMPANIES.keys())}
+        self.logger.info(f"Halaman home diakses dari {self.request.remote_addr}")
+        return {'title': 'Tutorial Logging', 'companies': list(COMPANIES.keys())}
 ```
 
-Each view class initializes with a logger and logs significant events. This provides visibility into application usage patterns and helps with debugging.
+Setiap *view class* menginisialisasi logger dan mencatat event penting, memberikan visibilitas terhadap pola penggunaan aplikasi dan membantu debugging.
 
-### Performance Logging
+---
+
+### Logging Performa
 
 ```python
 @view_config(request_method='GET')
 def hello(self):
     start_time = time.time()
-    self.logger.info(f"Hello page requested for name: {self.name}")
+    self.logger.info(f"Halaman hello diminta untuk nama: {self.name}")
 
-    result = {'name': self.name, 'greeting': f'Hello, {self.name}!'}
+    result = {'name': self.name, 'greeting': f'Halo, {self.name}!'}
 
     end_time = time.time()
-    self.logger.debug(f"Hello page rendered in {end_time - start_time:.4f} seconds")
+    self.logger.debug(f"Halaman hello dirender dalam {end_time - start_time:.4f} detik")
 
     return result
 ```
 
-Performance logging measures execution times and logs them at appropriate levels. Debug level for detailed timing, info level for general operations.
+Bagian ini mencatat waktu eksekusi untuk memantau performa.
+Gunakan `DEBUG` untuk informasi detail dan `INFO` untuk aktivitas umum.
 
-### Error Logging
+---
+
+### Logging Error
 
 ```python
 @view_config(request_method='POST', renderer='json')
 def hello_post(self):
     try:
         data = self.request.json_body
-        # Process data
         return {'result': 'processed'}
     except Exception as e:
-        self.logger.error(f"Error processing POST request: {str(e)}")
-        return {'error': 'Invalid request data', 'details': str(e)}
+        self.logger.error(f"Kesalahan saat memproses POST request: {str(e)}")
+        return {'error': 'Data request tidak valid', 'details': str(e)}
 ```
 
-Error logging captures exceptions with context, helping identify and resolve issues. Both the error and a user-friendly response are logged.
+Semua error ditangkap dan dicatat bersama konteksnya, sehingga lebih mudah dilacak dan diperbaiki.
 
-### API Logging
+---
+
+### Logging API
 
 ```python
 @view_config(request_method='PUT', renderer='json')
 def update_company(self):
-    self.logger.info(f"PUT request to update company: {self.company_name}")
+    self.logger.info(f"PUT request untuk update perusahaan: {self.company_name}")
 
     try:
         update_data = self.request.json_body
-        self.logger.debug(f"Update data received: {update_data}")
-        # Process update
-        return {'message': 'Company updated successfully'}
+        self.logger.debug(f"Data update diterima: {update_data}")
+        return {'message': 'Perusahaan berhasil diperbarui'}
     except Exception as e:
-        self.logger.error(f"Error updating company {self.company_name}: {str(e)}")
+        self.logger.error(f"Kesalahan saat update {self.company_name}: {str(e)}")
         return {'error': str(e)}
 ```
 
-API operations log both successful operations and failures, with debug-level logging for detailed request data.
+Operasi API mencatat keberhasilan maupun kegagalan, dengan level `DEBUG` untuk data detail.
 
-## Logging Levels and Usage
+---
 
-### DEBUG Level
-Used for detailed diagnostic information:
+## Level Logging dan Penggunaannya
 
-```python
-self.logger.debug(f"Processing time: {end_time - start_time:.4f} seconds")
-self.logger.debug(f"Received data: {data}")
-```
+### DEBUG
 
-### INFO Level
-Used for general application information:
+Digunakan untuk informasi diagnostik detail:
 
 ```python
-self.logger.info(f"Home page accessed from {self.request.remote_addr}")
-self.logger.info(f"Successfully processed request for {self.name}")
+self.logger.debug(f"Waktu proses: {end_time - start_time:.4f} detik")
 ```
 
-### WARNING Level
-Used for potentially harmful situations:
+### INFO
+
+Digunakan untuk informasi umum:
 
 ```python
-self.logger.warning(f"Company not found: {self.company_name}")
+self.logger.info(f"Halaman home diakses dari {self.request.remote_addr}")
 ```
 
-### ERROR Level
-Used for serious problems:
+### WARNING
+
+Digunakan untuk situasi yang berpotensi bermasalah:
 
 ```python
-self.logger.error(f"Error processing request: {str(e)}")
+self.logger.warning(f"Perusahaan tidak ditemukan: {self.company_name}")
 ```
 
-## Request Context Logging
+### ERROR
 
-### Request Metadata
+Untuk masalah serius:
+
+```python
+self.logger.error(f"Kesalahan saat memproses request: {str(e)}")
+```
+
+---
+
+## Logging Konteks Request
+
+### Metadata Request
 
 ```python
 def debug_info(self):
@@ -165,44 +196,42 @@ def debug_info(self):
         'remote_addr': self.request.remote_addr,
         'timestamp': datetime.now().isoformat()
     }
-    self.logger.debug(f"Debug data collected: {debug_data}")
+    self.logger.debug(f"Data debug dikumpulkan: {debug_data}")
     return debug_data
 ```
 
-Request context logging captures comprehensive information about each request, useful for debugging and security monitoring.
+Log ini menyimpan informasi lengkap tiap request — berguna untuk debugging dan pemantauan keamanan.
 
-### User Activity Tracking
+---
+
+### Pelacakan Aktivitas Pengguna
 
 ```python
 @view_config(route_name='logs', renderer='templates/logs.html')
 class LogViews:
     def __call__(self):
-        self.logger.info("Logs page accessed")
-        # Demonstrate different log levels
-        self.logger.debug("This is a debug message")
-        self.logger.info("This is an info message")
-        self.logger.warning("This is a warning message")
-        self.logger.error("This is an error message")
+        self.logger.info("Halaman logs diakses")
+        self.logger.debug("Ini pesan debug")
+        self.logger.info("Ini pesan info")
+        self.logger.warning("Ini pesan warning")
+        self.logger.error("Ini pesan error")
 ```
 
-User activity logging tracks page access and demonstrates logging level usage.
+Bagian ini menunjukkan penggunaan berbagai level logging untuk aktivitas pengguna.
 
-## Structured Logging Patterns
+---
 
-### Consistent Message Formats
+## Pola Logging Terstruktur
+
+### Format Pesan yang Konsisten
 
 ```python
-# Request logging
-self.logger.info(f"{self.request.method} {self.request.path} from {self.request.remote_addr}")
-
-# Operation logging
-self.logger.info(f"Company {self.company_name} updated successfully")
-
-# Error logging
-self.logger.error(f"Failed to process {operation}: {str(e)}")
+self.logger.info(f"{self.request.method} {self.request.path} dari {self.request.remote_addr}")
+self.logger.info(f"Perusahaan {self.company_name} berhasil diperbarui")
+self.logger.error(f"Gagal memproses {operation}: {str(e)}")
 ```
 
-### Contextual Information
+### Informasi Kontekstual
 
 ```python
 log_context = {
@@ -211,27 +240,28 @@ log_context = {
     'request_id': getattr(self.request, 'id', 'unknown'),
     'timestamp': datetime.now().isoformat()
 }
-self.logger.info(f"Operation completed", extra=log_context)
+self.logger.info("Operasi selesai", extra=log_context)
 ```
 
-## Performance Monitoring
+---
 
-### Response Time Tracking
+## Pemantauan Performa
+
+### Pelacakan Waktu Respon
 
 ```python
 start_time = time.time()
-# Process request
 result = self.process_request()
 end_time = time.time()
 
 response_time = end_time - start_time
-self.logger.info(f"Request processed in {response_time:.4f} seconds")
+self.logger.info(f"Request diproses dalam {response_time:.4f} detik")
 
-if response_time > 1.0:  # Log slow requests
-    self.logger.warning(f"Slow request detected: {response_time:.4f} seconds")
+if response_time > 1.0:
+    self.logger.warning(f"Request lambat terdeteksi: {response_time:.4f} detik")
 ```
 
-### Resource Usage Logging
+### Logging Penggunaan Resource
 
 ```python
 import psutil
@@ -242,12 +272,14 @@ def log_resource_usage(self):
     memory_usage = process.memory_info().rss / 1024 / 1024  # MB
     cpu_percent = process.cpu_percent()
 
-    self.logger.debug(f"Memory usage: {memory_usage:.2f} MB, CPU: {cpu_percent:.1f}%")
+    self.logger.debug(f"Penggunaan memori: {memory_usage:.2f} MB, CPU: {cpu_percent:.1f}%")
 ```
 
-## Error Handling Patterns
+---
 
-### Try-Catch with Logging
+## Pola Penanganan Error
+
+### Try-Except dengan Logging
 
 ```python
 try:
@@ -255,101 +287,102 @@ try:
     result = self.process_data(data)
     return {'success': True, 'result': result}
 except json.JSONDecodeError as e:
-    self.logger.warning(f"Invalid JSON received: {str(e)}")
-    return {'error': 'Invalid JSON format'}
+    self.logger.warning(f"JSON tidak valid: {str(e)}")
+    return {'error': 'Format JSON salah'}
 except Exception as e:
-    self.logger.error(f"Unexpected error: {str(e)}", exc_info=True)
-    return {'error': 'Internal server error'}
+    self.logger.error(f"Error tak terduga: {str(e)}", exc_info=True)
+    return {'error': 'Kesalahan internal server'}
 ```
 
-### Validation Error Logging
+### Validasi Data dengan Logging
 
 ```python
 def validate_company_data(self, data):
     errors = []
     if 'name' not in data:
-        errors.append('name is required')
-        self.logger.warning("Company creation failed: missing name field")
+        errors.append('name wajib diisi')
+        self.logger.warning("Gagal membuat perusahaan: field name kosong")
 
     if errors:
-        self.logger.error(f"Validation failed for company data: {errors}")
+        self.logger.error(f"Validasi gagal: {errors}")
         raise ValidationError(errors)
 ```
 
-## Security Logging
+---
 
-### Authentication Events
+## Logging Keamanan
+
+### Event Autentikasi
 
 ```python
 def log_authentication(self, username, success):
     if success:
-        self.logger.info(f"Successful login for user: {username}")
+        self.logger.info(f"Login berhasil untuk user: {username}")
     else:
-        self.logger.warning(f"Failed login attempt for user: {username} from {self.request.remote_addr}")
+        self.logger.warning(f"Login gagal untuk user: {username} dari {self.request.remote_addr}")
 ```
 
-### Access Control
+### Kontrol Akses
 
 ```python
 def check_permission(self, resource, action):
     if not self.has_permission(resource, action):
-        self.logger.warning(f"Access denied: {action} on {resource} for user {self.request.authenticated_userid}")
+        self.logger.warning(f"Akses ditolak: {action} pada {resource} oleh {self.request.authenticated_userid}")
         raise HTTPForbidden()
 ```
 
-## Log Analysis and Monitoring
+---
 
-### Log Aggregation
+## Analisis dan Pemantauan Log
+
+### Agregasi Log
 
 ```python
-# Example log aggregation patterns
-error_count = 0
-request_count = 0
-
-# In middleware or periodic task
 def analyze_logs():
-    # Count errors in last hour
-    # Count requests by endpoint
-    # Identify slow requests
-    # Detect unusual patterns
+    # Hitung jumlah error per jam
+    # Hitung request per endpoint
+    # Deteksi request lambat
+    # Deteksi pola tak biasa
 ```
 
-### Alerting
+### Sistem Peringatan (Alerting)
 
 ```python
 def check_error_threshold():
     recent_errors = get_recent_errors()
     if len(recent_errors) > ERROR_THRESHOLD:
-        # Send alert
-        self.logger.critical(f"Error threshold exceeded: {len(recent_errors)} errors in last hour")
+        self.logger.critical(f"Batas error terlampaui: {len(recent_errors)} error dalam 1 jam terakhir")
 ```
 
-## Testing Logging
+---
 
-### Unit Testing Log Output
+## Pengujian Logging
+
+### Unit Test Log Output
 
 ```python
 def test_logging():
     with mock.patch('logging.Logger.info') as mock_info:
         view = HomeViews(dummy_request)
         view.home()
-        mock_info.assert_called_with("Home page accessed from 127.0.0.1")
+        mock_info.assert_called_with("Halaman home diakses dari 127.0.0.1")
 ```
 
-### Integration Testing
+### Integration Test
 
 ```python
 def test_request_logging(app):
     with mock.patch('logging.Logger.info') as mock_info:
         app.get('/')
         assert mock_info.called
-        call_args = mock_info.call_args[0][0]
-        assert 'Home page accessed' in call_args
+        assert 'Halaman home diakses' in mock_info.call_args[0][0]
 ```
 
-## Configuration Management
+---
 
-### Environment-Based Logging
+## Manajemen Konfigurasi
+
+### Logging Berdasarkan Lingkungan
 
 ```python
 import os
@@ -358,7 +391,7 @@ log_level = getattr(logging, os.environ.get('LOG_LEVEL', 'INFO').upper())
 logging.basicConfig(level=log_level)
 ```
 
-### Structured Configuration
+### Konfigurasi Terstruktur (file INI)
 
 ```ini
 [logger_tutorial]
@@ -372,59 +405,70 @@ args = ('app.log',)
 formatter = detailed
 ```
 
-## Best Practices
+---
 
-### Log Message Guidelines
+## Praktik Terbaik
 
-- Use consistent formats
-- Include relevant context
-- Avoid sensitive information
-- Use appropriate log levels
+### Panduan Pesan Log
 
-### Performance Considerations
+* Gunakan format yang konsisten
+* Sertakan konteks yang relevan
+* Jangan log data sensitif
+* Gunakan level log yang sesuai
 
-- Log asynchronously when possible
-- Use structured logging for better parsing
-- Implement log rotation
-- Monitor log file sizes
+### Pertimbangan Performa
 
-### Security Considerations
+* Gunakan logging asynchronous jika memungkinkan
+* Gunakan format terstruktur seperti JSON
+* Terapkan log rotation
+* Pantau ukuran file log
 
-- Never log passwords or sensitive data
-- Sanitize user input in logs
-- Implement log access controls
-- Regular log review and analysis
+### Pertimbangan Keamanan
 
-## Analysis
+* Jangan log password atau data pribadi
+* Bersihkan input pengguna sebelum dicatat
+* Batasi akses file log
+* Tinjau log secara rutin
 
-### Benefits of Comprehensive Logging
+---
 
-- **Debugging**: Easier identification and resolution of issues
-- **Monitoring**: Real-time visibility into application health
-- **Security**: Tracking of suspicious activities
-- **Performance**: Identification of bottlenecks and optimization opportunities
-- **Auditing**: Compliance and regulatory requirements
+## Analisis
 
-### Logging Overhead
+### Keuntungan Logging yang Komprehensif
 
-- **Performance Impact**: Logging operations consume resources
-- **Storage Requirements**: Log files can grow quickly
-- **Privacy Concerns**: Careful handling of personal data
+* **Debugging:** Mempermudah identifikasi dan penyelesaian masalah
+* **Monitoring:** Memberi visibilitas terhadap kesehatan aplikasi
+* **Keamanan:** Melacak aktivitas mencurigakan
+* **Performa:** Mengidentifikasi bottleneck
+* **Audit:** Membantu kepatuhan dan pelacakan
 
-### Implementation Patterns
+### Kelemahan
 
-- **Centralized Configuration**: Consistent logging setup across the application
-- **Context Propagation**: Request IDs and user context throughout the call stack
-- **Structured Data**: JSON-formatted logs for better analysis
-- **Log Levels**: Appropriate use of DEBUG, INFO, WARNING, ERROR levels
+* Logging memakan sumber daya
+* File log bisa cepat membesar
+* Harus hati-hati agar tidak mencatat data pribadi
 
-### Scalability Factors
+### Pola Implementasi
 
-- **Log Aggregation**: Centralized logging for distributed systems
-- **Asynchronous Logging**: Non-blocking log operations
-- **Log Rotation**: Automatic management of log file sizes
-- **Compression**: Storage optimization for historical logs
+* Konfigurasi terpusat
+* Propagasi konteks (request ID, user ID)
+* Data log terstruktur (JSON)
+* Penggunaan level log yang tepat
 
-## Conclusion
+### Skalabilitas
 
-Comprehensive logging is essential for modern web applications. This tutorial demonstrates how to implement logging throughout a Pyramid application, from basic request tracking to advanced performance monitoring and error handling. Effective logging practices enable better debugging, monitoring, security, and maintenance of web applications. Understanding these patterns allows developers to build more robust, observable, and maintainable systems.
+* Agregasi log secara terpusat
+* Logging asynchronous
+* Rotasi otomatis log
+* Kompresi log lama
+
+---
+
+## Kesimpulan
+
+Logging yang menyeluruh sangat penting untuk aplikasi web modern.
+Tutorial ini menunjukkan cara menerapkan logging di seluruh bagian aplikasi Pyramid, mulai dari pelacakan request hingga pemantauan performa dan penanganan error.
+
+Dengan praktik logging yang baik, pengembang bisa membangun sistem yang **lebih kuat, aman, mudah dipantau, dan mudah dipelihara**.
+
+--
