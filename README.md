@@ -1,6 +1,7 @@
 # Tugas Tambahan Nilai UTS
-
-Repository ini berisi implementasi dan analisis dari 21 tutorial Pyramid web framework.
+Nama:Febrian Valentino Nugroho
+NIM:123140034
+Kelas:RA
 
 ## Struktur Folder
 
@@ -26,4 +27,4 @@ Repository ini berisi implementasi dan analisis dari 21 tutorial Pyramid web fra
 - 20_Logins_with_authentication
 - 21_Protecting_Resources_With_Authorization
 
-Setiap folder berisi kode implementasi tutorial, file analysis.md, dan file pendukung lainnya.
+
