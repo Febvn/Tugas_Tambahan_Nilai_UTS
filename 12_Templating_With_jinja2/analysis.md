@@ -1,35 +1,42 @@
-# Tutorial 12: Templating With jinja2
+# Tutorial 12: Template dengan Jinja2
 
-## Overview
-This tutorial introduces Jinja2 templating in Pyramid applications, demonstrating how to separate presentation logic from application logic using powerful template rendering.
+## Gambaran Umum
 
-## Key Concepts
+Tutorial ini memperkenalkan penggunaan **Jinja2 templating** dalam aplikasi Pyramid, yang membantu memisahkan logika presentasi (tampilan) dari logika aplikasi menggunakan sistem rendering template yang kuat.
 
-### Template Engines
-Jinja2 as a modern, fast template engine for Python.
+## Konsep Utama
 
-### Template Rendering
-How Pyramid integrates with Jinja2 for HTML generation.
+### Mesin Template
 
-### Template Variables
-Passing data from views to templates.
+**Jinja2** adalah mesin template modern dan cepat untuk Python.
 
-## Implementation Details
+### Rendering Template
 
-### Configuration
+Menjelaskan bagaimana Pyramid berintegrasi dengan Jinja2 untuk menghasilkan halaman HTML secara dinamis.
+
+### Variabel Template
+
+Menunjukkan cara mengirim data dari fungsi **view** ke template.
+
+## Detail Implementasi
+
+### Konfigurasi
+
 ```python
 config.include('pyramid_jinja2')
 config.add_jinja2_renderer('.html')
 ```
 
-### View Configuration
+### Konfigurasi View
+
 ```python
 @view_config(route_name='home', renderer='templates/home.html')
 def home(request):
     return {'name': 'Home View'}
 ```
 
-### Template Syntax
+### Sintaks Template
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -42,113 +49,140 @@ def home(request):
 </html>
 ```
 
-## Template Features
+## Fitur Template
 
-### Variable Interpolation
-Inserting Python variables into templates.
+### Interpolasi Variabel
 
-### Control Structures
-- `{% if %}` conditions
-- `{% for %}` loops
-- `{% set %}` variable assignment
+Menyisipkan nilai variabel Python ke dalam template HTML.
 
-### Filters
-Transforming variables in templates.
+### Struktur Kontrol
 
-### Template Inheritance
-Base templates and extending them.
+* `{% if %}` untuk kondisi
+* `{% for %}` untuk perulangan
+* `{% set %}` untuk mendefinisikan variabel
+
+### Filter
+
+Mengubah atau memformat nilai variabel dalam template.
+
+### Pewarisan Template
+
+Membuat **base template** dan menurunkannya ke halaman lain agar kode tidak berulang.
 
 ## Jinja2 vs Chameleon
 
-### Syntax Comparison
-- Jinja2: `{{ variable }}`, `{% if %}`
-- Chameleon: `${variable}`, `tal:condition`
+### Perbandingan Sintaks
 
-### Performance
-Both are fast, but Jinja2 is generally faster for complex templates.
+* Jinja2: `{{ variable }}`, `{% if %}`
+* Chameleon: `${variable}`, `tal:condition`
 
-### Features
-Jinja2 has more built-in filters and functions.
+### Performa
 
-### Ecosystem
-Jinja2 is widely used outside Pyramid.
+Keduanya cepat, tapi **Jinja2** biasanya lebih unggul untuk template yang kompleks.
 
-## Advanced Templating
+### Fitur
+
+Jinja2 memiliki lebih banyak filter dan fungsi bawaan.
+
+### Ekosistem
+
+Jinja2 lebih banyak digunakan di luar Pyramid (misalnya di Flask dan Django).
+
+## Templating Lanjutan
 
 ### Macros
-Reusable template components.
 
-### Includes
-Including other templates.
+Mendefinisikan komponen template yang bisa digunakan berulang.
 
-### Custom Filters
-Creating application-specific filters.
+### Include
 
-### Template Context
-Managing template variables and scope.
+Menyertakan template lain di dalam satu template utama.
 
-## Template Organization
+### Filter Kustom
 
-### Directory Structure
-Organizing templates in logical directories.
+Membuat filter sendiri untuk kebutuhan aplikasi tertentu.
 
-### Naming Conventions
-Consistent template naming.
+### Konteks Template
 
-### Asset Management
-Handling CSS, JavaScript, and images.
+Mengatur variabel dan ruang lingkup data yang dikirim ke template.
 
-### Template Caching
-Performance optimization for templates.
+## Organisasi Template
 
-## Analysis
+### Struktur Direktori
 
-### Separation of Concerns
-Benefits of separating logic from presentation.
+Template disusun secara logis dalam folder seperti `templates/`.
 
-### Maintainability
-Easier maintenance with template separation.
+### Konvensi Penamaan
 
-### Reusability
-Template reuse across different views.
+Gunakan nama template yang konsisten dan deskriptif.
 
-### Performance Considerations
-Template compilation and caching.
+### Manajemen Aset
 
-### Security
-Preventing template injection attacks.
+Menghubungkan CSS, JavaScript, dan gambar dalam template.
 
-## Best Practices
+### Cache Template
 
-### Template Structure
-- Use consistent directory structure
-- Keep templates small and focused
-- Use meaningful variable names
-- Document template purpose
+Meningkatkan performa dengan menyimpan hasil kompilasi template.
 
-### Variable Passing
-- Pass only necessary data to templates
-- Use dictionaries for complex data
-- Avoid business logic in templates
-- Sanitize user input
+## Analisis
 
-### Template Inheritance
-- Create base templates for common elements
-- Use blocks for customizable sections
-- Keep inheritance hierarchy simple
-- Document block purposes
+### Pemisahan Tanggung Jawab
 
-### Performance
-- Enable template caching in production
-- Minimize template complexity
-- Use appropriate filters
-- Profile template rendering
+Memisahkan logika tampilan dari logika aplikasi membuat kode lebih bersih.
 
-### Security
-- Escape user input automatically
-- Use safe filters when needed
-- Validate template data
-- Avoid template injection
+### Kemudahan Pemeliharaan
 
-## Conclusion
-Jinja2 templating provides a powerful and flexible way to generate HTML in Pyramid applications. Its clean syntax, extensive features, and performance make it an excellent choice for modern web development. Understanding template organization, variable passing, and best practices enables developers to create maintainable and efficient web applications.
+Template yang terpisah lebih mudah dikelola dan diperbarui.
+
+### Reusabilitas
+
+Template bisa digunakan ulang di berbagai halaman atau view.
+
+### Pertimbangan Performa
+
+Gunakan caching dan hindari template yang terlalu kompleks.
+
+### Keamanan
+
+Pastikan untuk mencegah **template injection** dan melakukan **escaping** pada input pengguna.
+
+## Praktik Terbaik
+
+### Struktur Template
+
+* Gunakan struktur folder yang konsisten
+* Buat template kecil dan fokus
+* Gunakan nama variabel yang bermakna
+* Tambahkan komentar untuk dokumentasi
+
+### Pengiriman Variabel
+
+* Hanya kirim data yang dibutuhkan
+* Gunakan dictionary untuk data kompleks
+* Hindari logika bisnis di template
+* Selalu sanitasi input pengguna
+
+### Pewarisan Template
+
+* Gunakan base template untuk elemen umum (navbar, footer, dll.)
+* Gunakan block untuk area yang bisa disesuaikan
+* Jaga hierarki pewarisan tetap sederhana
+* Dokumentasikan penggunaan tiap block
+
+### Performa
+
+* Aktifkan caching di mode produksi
+* Kurangi kompleksitas template
+* Gunakan filter dengan efisien
+* Profil waktu render jika perlu
+
+### Keamanan
+
+* Escape input secara otomatis
+* Gunakan filter `safe` dengan hati-hati
+* Validasi data sebelum dirender
+* Hindari eksekusi kode berbahaya di template
+
+## Kesimpulan
+
+Templating dengan **Jinja2** memungkinkan pengembang Pyramid untuk memisahkan tampilan dari logika bisnis, menghasilkan aplikasi yang lebih **terstruktur, aman, dan mudah dikelola**. Dengan memanfaatkan fitur seperti pewarisan, filter, dan macro, Jinja2 memberikan fleksibilitas tinggi dalam membangun antarmuka web yang dinamis dan efisien.
